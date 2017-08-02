@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">A+物流</string>
+
+    <!--DefaultProgressDialog-->
+    <string name="text_progress_logining">登录中&#8230;</string>
+
+    <!--MainActivity-->
+    <string name="tab_order_text">周边订单</string>
+    <string name="tab_contacts_text">通讯列表</string>
+    <string name="tab_mine_message_text">我的消息</string>
+    <string name="toast_exit">再按一次退出系统</string>
+
+    <!--LoginActivty-->
+    <string name="title_login_activity">登录</string>
+    <string name="text_to_register">注册</string>
+    <string name="text_phone_number_hint">手机号</string>
+    <string name="text_password_hint">密码</string>
+    <string name="text_do_login">登录</string>
+    <string name="text_forget_password">忘记密码？</string>
+    <string name="toast_login_success">登录成功</string>
+    <string name="toast_login_error">登录失败</string>
+    <string name="toast_token_error">token不正确</string>
+
+    <!--VerificationCodeActivity-->
+    <string name="title_register">注册</string>
+    <string name="title_find_password">找回密码</string>
+    <string name="text_to_login">登录</string>
+    <string name="text_hint_phone_number">请填写手机号</string>
+    <string name="text_button_get_verification_code">获取验证码</string>
+    <string name="text_button_count_down">%d秒后重发</string>
+    <string name="text_button_reget_verification_code">重发验证码</string>
+    <string name="text_hint_verification_code">请填写验证码</string>
+    <string name="text_button_next_step">下一步</string>
+    <string name="toast_phone_number_error">请输入正确的手机号码</string>
+    <string name="toast_get_verification_code_error">获取验证码失败，请重试</string>
+    <string name="toast_get_verification_code_success">验证码已发送</string>
+
+    <!--SetPasswordActivity-->
+    <string name="title_set_password_activity">填写密码</string>
+    <string name="text_hint_password">请填写密码</string>
+    <string name="text_button_do_commit">完成</string>
+    <string name="toast_passowrd_is_null">密码不能为空</string>
+    <string name="toast_set_password_success">设置密码成功</string>
+    <string name="toast_set_password_error">设置密码失败</string>
+
+    <!--ChatActivity-->
+
+    <!--OrderFragment-->
+    <string name="title_order">周边订单</string>
+
+
+    <!--ContactsFragment-->
+    <string name="title_contacts">通讯列表</string>
+    <string name="text_tab_chat">聊天</string>
+    <string name="text_tab_friends">好友</string>
+
+    <!--MineFragment-->
+    <string name="text_button_bind">手机已绑定</string>
+    <string name="text_button_qrcode">二维码名片</string>
+    <string name="text_button_my_ordre">我的订单</string>
+    <string name="text_button_my_message">个人消息</string>
+    <string name="text_button_my_draft_box">草稿箱</string>
+    <string name="text_button_my_wallet">我的零钱</string>
+    <string name="text_button_manage_address">管理地址</string>
+    <string name="text_button_register_courier">注册为快递员</string>
+    <string name="text_button_courier_order">快递订单</string>
+    <string name="text_button_customer_service">联系客服</string>
+    <string name="text_user_id">ID:%s</string>
+
+    <!--UserSettingsActivity-->
+    <string name="title_user_settings_activity">设置</string>
+    <string name="text_edit_user_information">修改个人资料</string>
+    <string name="text_change_password">修改密码</string>
+    <string name="text_change_bind_phone">修改绑定手机</string>
+    <string name="text_check_update">系统更新</string>
+    <string name="text_current_version">当前版本V%s</string>
+    <string name="text_clean_cache">清除缓存</string>
+    <string name="text_button_login_out">退出登录</string>
+
+</resources>
