@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
+import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.FastClick;
@@ -35,7 +36,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class VerificationCodeActivity extends BaseAppCompatActivity {
 
-    public static final String TYPE_IS_REGISTER = "type_is_register";//是否注册用，否则是忘记密码
     private static final int COUNT_DOWN_TIME = 60;//倒计时总时间
 
     private EditText etPhone;
@@ -62,6 +62,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
                         final String code = etCode.getText().toString().trim();
                         Intent intent = new Intent();
                         intent.setClass(VerificationCodeActivity.this, SetPasswordActivity.class);
+                        intent.putExtra(Config.ACTIVITY_TYPE_IS_REGISTER, mIsRegister);
                         intent.putExtra(SetPasswordActivity.KEY_PHONE_NUMBER, phoneNum);
                         intent.putExtra(SetPasswordActivity.KEY_VERIFICATION_CODE, code);
                         startActivity(intent);
@@ -116,7 +117,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
     }
 
     private void initData() {
-        mIsRegister = getIntent().getBooleanExtra(TYPE_IS_REGISTER, true);
+        mIsRegister = getIntent().getBooleanExtra(Config.ACTIVITY_TYPE_IS_REGISTER, true);
     }
 
     private void initToolbar() {
@@ -156,7 +157,13 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
             ToastMaster.toast(getString(R.string.toast_phone_number_error));
         } else {
             showProgress("");
-            ServiceClient.getService().getVerificationCode(mobile)
+            final Observable<ServiceResult> observable;
+            if (mIsRegister) {
+                observable = ServiceClient.getService().getRegisterVerificationCode(mobile);
+            } else {
+                observable = ServiceClient.getService().getVerificationCode(mobile);
+            }
+            observable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(

@@ -4,7 +4,30 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
 
+    <!--100%    FF-->
+    <!--95% 	F2-->
+    <!--90% 	E6-->
+    <!--85% 	D9-->
+    <!--80% 	CC-->
+    <!--75%	    BF-->
+    <!--70% 	B3-->
+    <!--65% 	A6-->
+    <!--60% 	99-->
+    <!--55% 	8C-->
+    <!--50% 	80-->
+    <!--45% 	73-->
+    <!--40% 	66-->
+    <!--35% 	59-->
+    <!--30% 	4D-->
+    <!--25% 	40-->
+    <!--20% 	33-->
+    <!--15% 	26-->
+    <!--10% 	1A-->
+    <!--5%  	0D-->
+    <!--0%  	00-->
+
     <color name="black">#000000</color>
+    <color name="black_50percent">#80000000</color>
     <color name="white">#FFFFFF</color>
     <color name="color_181818">#181818</color>
     <color name="color_999999">#999999</color>
@@ -17,5 +40,6 @@
     <color name="color_CCCCCC">#CCCCCC</color>
     <color name="color_666666">#666666</color>
     <color name="color_FBFBFB">#FBFBFB</color>
+    <color name="color_58686E">#58686E</color>
 
 </resources>

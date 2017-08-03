@@ -82,7 +82,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                 case R.id.tv_forget_password:
                     startActivity(
                             new Intent(LoginActivity.this, VerificationCodeActivity.class)
-                                    .putExtra(VerificationCodeActivity.TYPE_IS_REGISTER, false));
+                                    .putExtra(Config.ACTIVITY_TYPE_IS_REGISTER, false));
                     break;
             }
         }

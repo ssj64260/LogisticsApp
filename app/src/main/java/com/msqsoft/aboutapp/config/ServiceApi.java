@@ -23,12 +23,19 @@ public interface ServiceApi {
     @FormUrlEncoded
     Observable<ServiceResult<UserInfoDetailBean>> getUserInfoDetail(@Header("apiToken") String token, @Field("user_id") String userId);
 
-    @POST("?g=WebApi&m=login&a=sendPinSignUp")//获取验证码
+    @POST("?g=WebApi&m=login&a=sendPinSignUp")//注册获取验证码
+    @FormUrlEncoded
+    Observable<ServiceResult> getRegisterVerificationCode(@Field("mobile") String mobile);
+
+    @POST("?g=WebApi&m=login&a=sendCode")//重置密码获取验证码
     @FormUrlEncoded
     Observable<ServiceResult> getVerificationCode(@Field("mobile") String mobile);
 
-    @POST("?g=WebApi&m=user&a=ForgetPwd")//提交手机号码，验证码，密码
+    @POST("?g=WebApi&m=user&a=ForgetPwd")//重置密码
     @FormUrlEncoded
     Observable<ServiceResult> doSetPassword(@Field("mobile") String mobile, @Field("code") String code, @Field("pwd") String password);
 
+    @POST("?g=WebApi&m=login&a=mobilesSignUp")//注册
+    @FormUrlEncoded
+    Observable<ServiceResult<UserInfoDetailBean>> doRegister(@Field("mobile") String mobile, @Field("code") String code, @Field("password") String password);
 }

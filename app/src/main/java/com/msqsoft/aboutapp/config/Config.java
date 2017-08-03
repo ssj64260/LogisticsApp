@@ -8,6 +8,8 @@ public class Config {
 
     public static final String TEST_TOKEN = "fuhJ0Fwedcn+oLolIf3IT3Ift83tBRvTpflwsJy7HDx2w6J7FMLR/EbJGXWzl0e4w+bD7k+ntE/nhRAeIpq3tw==";
 
+    //通用Activity传值Key字段名
+    public static final String ACTIVITY_TYPE_IS_REGISTER = "type_is_register";//是否注册用，否则是忘记密码
 
     //SharePreferences相关
     public static final String APP_SETTING = "app_setting";//app设置

@@ -36,12 +36,15 @@
     <string name="toast_get_verification_code_success">验证码已发送</string>
 
     <!--SetPasswordActivity-->
-    <string name="title_set_password_activity">填写密码</string>
+    <string name="title_reset_password">重置密码</string>
+    <string name="title_set_password">填写密码</string>
     <string name="text_hint_password">请填写密码</string>
     <string name="text_button_do_commit">完成</string>
     <string name="toast_passowrd_is_null">密码不能为空</string>
     <string name="toast_set_password_success">设置密码成功</string>
     <string name="toast_set_password_error">设置密码失败</string>
+    <string name="toast_register_success">注册成功</string>
+    <string name="toast_register_error">注册失败</string>
 
     <!--ChatActivity-->
 

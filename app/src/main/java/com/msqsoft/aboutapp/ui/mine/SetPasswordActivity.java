@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
+import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.ToastMaster;
@@ -37,6 +38,8 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
     private String mPhoneNum;
     private String mCode;
 
+    private boolean mIsRegister;
+
     private View.OnClickListener click = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -45,7 +48,11 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                     onBackPressed();
                     break;
                 case R.id.tv_do_commit:
-                    commitPassword();
+                    if (mIsRegister) {
+                        doRegister();
+                    } else {
+                        resetPassword();
+                    }
                     break;
             }
         }
@@ -94,6 +101,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
     }
 
     private void initData() {
+        mIsRegister = getIntent().getBooleanExtra(Config.ACTIVITY_TYPE_IS_REGISTER, true);
         mPhoneNum = getIntent().getStringExtra(KEY_PHONE_NUMBER);
         mCode = getIntent().getStringExtra(KEY_VERIFICATION_CODE);
     }
@@ -103,7 +111,11 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
         final TextView tvTitle = (TextView) findViewById(R.id.tv_toolbar_title);
 
         ivBack.setOnClickListener(click);
-        tvTitle.setText(getString(R.string.title_set_password_activity));
+        if (mIsRegister) {
+            tvTitle.setText(getString(R.string.title_set_password));
+        } else {
+            tvTitle.setText(getString(R.string.title_reset_password));
+        }
     }
 
     private void initView() {
@@ -116,7 +128,40 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
         tvDoCommit.setOnClickListener(click);
     }
 
-    private void commitPassword() {
+    private void doRegister() {
+        final String password = etPassword.getText().toString().trim();
+        if (TextUtils.isEmpty(password)) {
+            ToastMaster.toast(getString(R.string.toast_passowrd_is_null));
+        } else {
+            showProgress("");
+            ServiceClient.getService().doRegister(mPhoneNum, mCode, password)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            new Consumer<ServiceResult>() {
+                                @Override
+                                public void accept(@NonNull ServiceResult result) throws Exception {
+                                    final String code = result.getResultCode();
+                                    if ("100".equals(code)) {
+                                        ToastMaster.toast(getString(R.string.toast_register_success));
+                                        toLogin();
+                                    } else {
+                                        ToastMaster.toast(result.getResultMsg());
+                                    }
+                                    hideProgress();
+                                }
+                            },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    hideProgress();
+                                    ToastMaster.toast(getString(R.string.toast_register_error));
+                                }
+                            });
+        }
+    }
+
+    private void resetPassword() {
         final String password = etPassword.getText().toString().trim();
         if (TextUtils.isEmpty(password)) {
             ToastMaster.toast(getString(R.string.toast_passowrd_is_null));
@@ -132,10 +177,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                                     final String code = result.getResultCode();
                                     if ("100".equals(code)) {
                                         ToastMaster.toast(getString(R.string.toast_set_password_success));
-                                        Intent intent = new Intent();
-                                        intent.setClass(SetPasswordActivity.this, LoginActivity.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        startActivity(intent);
+                                        toLogin();
                                     } else {
                                         ToastMaster.toast(result.getResultMsg());
                                     }
@@ -150,5 +192,12 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                                 }
                             });
         }
+    }
+
+    private void toLogin() {
+        Intent intent = new Intent();
+        intent.setClass(SetPasswordActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }
