@@ -1,11 +1,15 @@
 package com.msqsoft.aboutapp.config;
 
+import com.msqsoft.aboutapp.model.BannerBean;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
@@ -38,4 +42,7 @@ public interface ServiceApi {
     @POST("?g=WebApi&m=login&a=mobilesSignUp")//注册
     @FormUrlEncoded
     Observable<ServiceResult<UserInfoDetailBean>> doRegister(@Field("mobile") String mobile, @Field("code") String code, @Field("password") String password);
+
+    @GET("?g=WebApi&m=basic&a=getslide")
+    Observable<ServiceResult<List<BannerBean>>> getBannerList();
 }

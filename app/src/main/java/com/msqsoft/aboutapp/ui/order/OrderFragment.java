@@ -1,6 +1,8 @@
 package com.msqsoft.aboutapp.ui.order;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,21 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseFragment;
+import com.msqsoft.aboutapp.model.BannerBean;
+import com.msqsoft.aboutapp.model.ServiceResult;
+import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.ToastMaster;
+import com.msqsoft.aboutapp.widget.imageloader.ImageLoaderFactory;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.loader.ImageLoader;
+
+import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 周边订单
@@ -20,6 +36,7 @@ public class OrderFragment extends BaseFragment {
     private static final String ARGUMENT = "argument";
 
     private View mRootView;
+    private Banner mBanner;
 
     private View.OnClickListener click = new View.OnClickListener() {
         @Override
@@ -48,16 +65,37 @@ public class OrderFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initData();
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (mRootView == null) {
             mRootView = inflater.inflate(R.layout.fragment_order, null);
-            initView();
 
-            setData();
+            initView();
+            getBannerList();
         }
 
         return mRootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mBanner.startAutoPlay();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mBanner.stopAutoPlay();
+    }
+
+    private void initData() {
+
     }
 
     private void initToolbar() {
@@ -76,10 +114,42 @@ public class OrderFragment extends BaseFragment {
 
     private void initView() {
         initToolbar();
+
+        mBanner = (Banner) mRootView.findViewById(R.id.banner);
+        mBanner.setIndicatorGravity(BannerConfig.CENTER);
+        mBanner.setImageLoader(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                if (path instanceof BannerBean) {
+                    final BannerBean banner = (BannerBean) path;
+                    ImageLoaderFactory.getLoader().loadImageCenterCrop(mActivity, imageView, banner.getSlide_pic());
+                }
+            }
+        });
     }
 
-    private void setData() {
+    private void getBannerList() {
+        ServiceClient.getService().getBannerList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<ServiceResult<List<BannerBean>>>() {
+                            @Override
+                            public void accept(@NonNull ServiceResult<List<BannerBean>> result) throws Exception {
+                                if ("100".equals(result.getResultCode())) {
+                                    final List<BannerBean> bannerList = result.getResultData();
+                                    if (bannerList != null && bannerList.size() > 0) {
+                                        mBanner.setImages(bannerList).start();
+                                    }
+                                }
+                            }
+                        },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
 
+                            }
+                        });
     }
 
 }
