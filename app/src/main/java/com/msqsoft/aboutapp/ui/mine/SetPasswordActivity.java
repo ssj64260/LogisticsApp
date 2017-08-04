@@ -2,7 +2,6 @@ package com.msqsoft.aboutapp.ui.mine;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -33,6 +32,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
     public static final String KEY_VERIFICATION_CODE = "key_verification_code";
 
     private EditText etPassword;
+    private ImageView ivClearPassword;
     private TextView tvDoCommit;
 
     private String mPhoneNum;
@@ -46,6 +46,9 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
             switch (v.getId()) {
                 case R.id.iv_toolbar_back:
                     onBackPressed();
+                    break;
+                case R.id.iv_clear_password:
+                    etPassword.setText("");
                     break;
                 case R.id.tv_do_commit:
                     if (mIsRegister) {
@@ -68,13 +71,11 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             final String password = etPassword.getText().toString();
             if (!TextUtils.isEmpty(password)) {
-                tvDoCommit.setBackgroundResource(R.drawable.shape_bg_button_yellow);
-                tvDoCommit.setTextColor(ContextCompat.getColor(SetPasswordActivity.this, R.color.color_181818));
-                tvDoCommit.setClickable(true);
+                tvDoCommit.setEnabled(true);
+                ivClearPassword.setVisibility(View.VISIBLE);
             } else {
-                tvDoCommit.setBackgroundResource(R.drawable.shape_bg_button_gray);
-                tvDoCommit.setTextColor(ContextCompat.getColor(SetPasswordActivity.this, R.color.white));
-                tvDoCommit.setClickable(false);
+                tvDoCommit.setEnabled(false);
+                ivClearPassword.setVisibility(View.GONE);
             }
         }
 
@@ -122,10 +123,13 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
         initToolbar();
 
         etPassword = (EditText) findViewById(R.id.et_password);
+        ivClearPassword = (ImageView) findViewById(R.id.iv_clear_password);
         tvDoCommit = (TextView) findViewById(R.id.tv_do_commit);
 
         etPassword.addTextChangedListener(textWatcher);
         tvDoCommit.setOnClickListener(click);
+        ivClearPassword.setOnClickListener(click);
+        tvDoCommit.setEnabled(false);
     }
 
     private void doRegister() {

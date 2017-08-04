@@ -2,7 +2,6 @@ package com.msqsoft.aboutapp.ui.mine;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -31,7 +30,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 注册页面 or 忘记密码
+ * 注册页面 or 忘记密码 TODO输入框清除按钮
  */
 
 public class VerificationCodeActivity extends BaseAppCompatActivity {
@@ -39,7 +38,9 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
     private static final int COUNT_DOWN_TIME = 60;//倒计时总时间
 
     private EditText etPhone;
+    private ImageView ivClearPhone;
     private EditText etCode;
+    private ImageView ivClearCode;
     private TextView tvGetCode;
     private TextView tvNextStep;
 
@@ -54,8 +55,14 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
                     case R.id.tv_toolbar_action:
                         onBackPressed();
                         break;
+                    case R.id.iv_clear_phone:
+                        etPhone.setText("");
+                        break;
                     case R.id.tv_get_code:
                         getVerificationCode();
+                        break;
+                    case R.id.iv_clear_code:
+                        etCode.setText("");
                         break;
                     case R.id.tv_next_step:
                         final String phoneNum = etPhone.getText().toString().trim();
@@ -80,22 +87,19 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            final String phoneNumber = etPhone.getText().toString();
-            final String code = etCode.getText().toString();
-            if (!TextUtils.isEmpty(phoneNumber) && !TextUtils.isEmpty(code)) {
-                tvNextStep.setBackgroundResource(R.drawable.shape_bg_button_yellow);
-                tvNextStep.setTextColor(ContextCompat.getColor(VerificationCodeActivity.this, R.color.color_181818));
-                tvNextStep.setClickable(true);
-            } else {
-                tvNextStep.setBackgroundResource(R.drawable.shape_bg_button_gray);
-                tvNextStep.setTextColor(ContextCompat.getColor(VerificationCodeActivity.this, R.color.white));
-                tvNextStep.setClickable(false);
-            }
+            setEditStatus();
         }
 
         @Override
         public void afterTextChanged(Editable s) {
 
+        }
+    };
+
+    private View.OnFocusChangeListener focusChange = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            setEditStatus();
         }
     };
 
@@ -140,15 +144,36 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
         initToolbar();
 
         etPhone = (EditText) findViewById(R.id.et_phone_number);
+        ivClearPhone = (ImageView) findViewById(R.id.iv_clear_phone);
         etCode = (EditText) findViewById(R.id.et_verification_code);
+        ivClearCode = (ImageView) findViewById(R.id.iv_clear_code);
         tvGetCode = (TextView) findViewById(R.id.tv_get_code);
         tvNextStep = (TextView) findViewById(R.id.tv_next_step);
 
         etPhone.addTextChangedListener(textWatcher);
         etCode.addTextChangedListener(textWatcher);
+        etPhone.setOnFocusChangeListener(focusChange);
+        etCode.setOnFocusChangeListener(focusChange);
         tvGetCode.setOnClickListener(click);
         tvNextStep.setOnClickListener(click);
-        tvNextStep.setClickable(false);
+        ivClearPhone.setOnClickListener(click);
+        ivClearCode.setOnClickListener(click);
+        tvNextStep.setEnabled(false);
+    }
+
+    private void setEditStatus() {
+        final String phoneNumber = etPhone.getText().toString();
+        final String code = etCode.getText().toString();
+        final boolean phoneIsEmpty = TextUtils.isEmpty(phoneNumber);
+        final boolean passwordIsEmpty = TextUtils.isEmpty(code);
+        final boolean enabled = tvNextStep.isEnabled();
+        if (!phoneIsEmpty && !passwordIsEmpty && !enabled) {
+            tvNextStep.setEnabled(true);
+        } else if ((phoneIsEmpty || passwordIsEmpty) && enabled) {
+            tvNextStep.setEnabled(false);
+        }
+        ivClearPhone.setVisibility((etPhone.hasFocus() && !phoneIsEmpty) ? View.VISIBLE : View.GONE);
+        ivClearCode.setVisibility((etCode.hasFocus() && !passwordIsEmpty) ? View.VISIBLE : View.GONE);
     }
 
     private void getVerificationCode() {
@@ -190,8 +215,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
     }
 
     private void doCountDown() {
-        tvGetCode.setClickable(false);
-        tvGetCode.setTextColor(ContextCompat.getColor(this, R.color.color_999999));
+        tvGetCode.setEnabled(false);
         Observable.intervalRange(0, COUNT_DOWN_TIME, 0, 1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -214,8 +238,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
 
                     @Override
                     public void onComplete() {
-                        tvGetCode.setClickable(true);
-                        tvGetCode.setTextColor(ContextCompat.getColor(VerificationCodeActivity.this, R.color.color_181818));
+                        tvGetCode.setEnabled(true);
                         tvGetCode.setText(getString(R.string.text_button_reget_verification_code));
                     }
                 });

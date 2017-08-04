@@ -33,6 +33,43 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
     private TextView tvCache;
     private TextView tvLoginOut;
 
+    private View.OnClickListener click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.iv_toolbar_back:
+                    onBackPressed();
+                    break;
+                case R.id.ll_edit:
+                    startActivity(new Intent(UserSettingsActivity.this, EditUserInfoActivity.class));
+                    break;
+                case R.id.ll_change_password:
+                    ToastMaster.toast(getString(R.string.text_change_password));
+                    break;
+                case R.id.ll_change_phone:
+                    ToastMaster.toast(getString(R.string.text_change_bind_phone));
+                    break;
+                case R.id.ll_check_update:
+                    ToastMaster.toast(getString(R.string.text_check_update));
+                    break;
+                case R.id.ll_clean_cache:
+                    final String cacheDir = SDCardUtil.getCacheDir(UserSettingsActivity.this);
+                    final String externalCacheDir = SDCardUtil.getExternalCacheDir(UserSettingsActivity.this);
+                    DataCleanManager.deleteAllFiles(new File(cacheDir));
+                    DataCleanManager.deleteAllFiles(new File(externalCacheDir));
+                    getCacheSize();
+                    break;
+                case R.id.tv_login_out:
+                    doLoginOut();
+                    Intent intent = new Intent();
+                    intent.setClass(UserSettingsActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,43 +129,5 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
         final String cache = FileUtil.FormatFileSize(this, cacheSize);
         tvCache.setText(cache);
     }
-
-    //点击监听
-    private View.OnClickListener click = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.iv_toolbar_back:
-                    onBackPressed();
-                    break;
-                case R.id.ll_edit:
-                    ToastMaster.toast(getString(R.string.text_edit_user_information));
-                    break;
-                case R.id.ll_change_password:
-                    ToastMaster.toast(getString(R.string.text_change_password));
-                    break;
-                case R.id.ll_change_phone:
-                    ToastMaster.toast(getString(R.string.text_change_bind_phone));
-                    break;
-                case R.id.ll_check_update:
-                    ToastMaster.toast(getString(R.string.text_check_update));
-                    break;
-                case R.id.ll_clean_cache:
-                    final String cacheDir = SDCardUtil.getCacheDir(UserSettingsActivity.this);
-                    final String externalCacheDir = SDCardUtil.getExternalCacheDir(UserSettingsActivity.this);
-                    DataCleanManager.deleteAllFiles(new File(cacheDir));
-                    DataCleanManager.deleteAllFiles(new File(externalCacheDir));
-                    getCacheSize();
-                    break;
-                case R.id.tv_login_out:
-                    doLoginOut();
-                    Intent intent = new Intent();
-                    intent.setClass(UserSettingsActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    break;
-            }
-        }
-    };
 
 }

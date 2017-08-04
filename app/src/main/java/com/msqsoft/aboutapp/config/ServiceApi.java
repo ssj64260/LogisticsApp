@@ -43,6 +43,11 @@ public interface ServiceApi {
     @FormUrlEncoded
     Observable<ServiceResult<UserInfoDetailBean>> doRegister(@Field("mobile") String mobile, @Field("code") String code, @Field("password") String password);
 
+    //获取首页广告
     @GET("?g=WebApi&m=basic&a=getslide")
     Observable<ServiceResult<List<BannerBean>>> getBannerList();
+
+    @POST("?g=WebApi&m=user&a=updateUserInfo")//修改用户昵称，个人签名，手机号
+    @FormUrlEncoded
+    Observable<ServiceResult> updateUserInfo(@Header("apiToken") String token, @Field("user_nicename") String nickname, @Field("signature") String sign, @Field("mobile") String mobile);
 }

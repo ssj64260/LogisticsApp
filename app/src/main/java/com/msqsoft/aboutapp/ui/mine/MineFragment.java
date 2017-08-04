@@ -32,6 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MineFragment extends BaseFragment {
 
+    private static final int REQUEST_CODE_USER_SETTINGS = 1001;
     private static final String ARGUMENT = "argument";
 
     private View mRootView;
@@ -56,6 +57,47 @@ public class MineFragment extends BaseFragment {
     private LinearLayout llService;
 
     private GlideCircleTransform mTransform;
+
+    private View.OnClickListener click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.iv_user_settings:
+                    startActivityForResult(new Intent(mActivity, UserSettingsActivity.class), REQUEST_CODE_USER_SETTINGS);
+                    break;
+                case R.id.ll_bind_phone:
+                    ToastMaster.toast(getString(R.string.text_button_bind));
+                    break;
+                case R.id.ll_qrcode:
+                    ToastMaster.toast(getString(R.string.text_button_qrcode));
+                    break;
+                case R.id.ll_order:
+                    ToastMaster.toast(getString(R.string.text_button_my_ordre));
+                    break;
+                case R.id.ll_personal_message:
+                    ToastMaster.toast(getString(R.string.text_button_my_message));
+                    break;
+                case R.id.ll_draft:
+                    ToastMaster.toast(getString(R.string.text_button_my_draft_box));
+                    break;
+                case R.id.ll_wallet:
+                    ToastMaster.toast(getString(R.string.text_button_my_wallet));
+                    break;
+                case R.id.ll_address:
+                    ToastMaster.toast(getString(R.string.text_button_manage_address));
+                    break;
+                case R.id.ll_registered:
+                    ToastMaster.toast(getString(R.string.text_button_register_courier));
+                    break;
+                case R.id.ll_courier_order:
+                    ToastMaster.toast(getString(R.string.text_button_courier_order));
+                    break;
+                case R.id.ll_service:
+                    ToastMaster.toast(getString(R.string.text_button_customer_service));
+                    break;
+            }
+        }
+    };
 
     public MineFragment() {
 
@@ -85,6 +127,14 @@ public class MineFragment extends BaseFragment {
         }
 
         return mRootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_USER_SETTINGS) {
+            setData();
+        }
     }
 
     private void initView() {
@@ -187,46 +237,5 @@ public class MineFragment extends BaseFragment {
             }
         }
     }
-
-    private View.OnClickListener click = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.iv_user_settings:
-                    startActivity(new Intent(mActivity, UserSettingsActivity.class));
-                    break;
-                case R.id.ll_bind_phone:
-                    ToastMaster.toast(getString(R.string.text_button_bind));
-                    break;
-                case R.id.ll_qrcode:
-                    ToastMaster.toast(getString(R.string.text_button_qrcode));
-                    break;
-                case R.id.ll_order:
-                    ToastMaster.toast(getString(R.string.text_button_my_ordre));
-                    break;
-                case R.id.ll_personal_message:
-                    ToastMaster.toast(getString(R.string.text_button_my_message));
-                    break;
-                case R.id.ll_draft:
-                    ToastMaster.toast(getString(R.string.text_button_my_draft_box));
-                    break;
-                case R.id.ll_wallet:
-                    ToastMaster.toast(getString(R.string.text_button_my_wallet));
-                    break;
-                case R.id.ll_address:
-                    ToastMaster.toast(getString(R.string.text_button_manage_address));
-                    break;
-                case R.id.ll_registered:
-                    ToastMaster.toast(getString(R.string.text_button_register_courier));
-                    break;
-                case R.id.ll_courier_order:
-                    ToastMaster.toast(getString(R.string.text_button_courier_order));
-                    break;
-                case R.id.ll_service:
-                    ToastMaster.toast(getString(R.string.text_button_customer_service));
-                    break;
-            }
-        }
-    };
 
 }

@@ -77,6 +77,14 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.mine.EditUserInfoActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mine.EditInformationActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.contacts.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">

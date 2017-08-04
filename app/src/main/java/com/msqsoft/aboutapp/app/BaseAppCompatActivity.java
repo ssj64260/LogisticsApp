@@ -57,11 +57,17 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         return userInfo;
     }
 
-    protected void updateUserInfo(UserInfoDetailBean newUserInfo) {
+    protected void updateCourierInfo(UserInfoDetailBean newUserInfo) {
         final LiteOrmHelper dbHelper = new LiteOrmHelper(this);
         final UserInfoDetailBean userInfo = dbHelper.queryFirst(UserInfoDetailBean.class);
         userInfo.setCourierInfo(newUserInfo);
         dbHelper.save(userInfo);
+        dbHelper.closeDB();
+    }
+
+    protected void updateUserInfo(UserInfoDetailBean newUserInfo) {
+        final LiteOrmHelper dbHelper = new LiteOrmHelper(this);
+        dbHelper.save(newUserInfo);
         dbHelper.closeDB();
     }
 

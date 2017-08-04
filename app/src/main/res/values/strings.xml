@@ -36,7 +36,7 @@
     <string name="toast_get_verification_code_success">验证码已发送</string>
 
     <!--SetPasswordActivity-->
-    <string name="title_reset_password">重置密码</string>
+    <string name="title_reset_password">设置新密码</string>
     <string name="title_set_password">填写密码</string>
     <string name="text_hint_password">请填写密码</string>
     <string name="text_button_do_commit">完成</string>
@@ -80,4 +80,22 @@
     <string name="text_clean_cache">清除缓存</string>
     <string name="text_button_login_out">退出登录</string>
 
+    <!--EditUserInfoActivity-->
+    <string name="title_edit_user_information">修改个人资料</string>
+    <string name="text_edit_user_avatar">头像</string>
+    <string name="text_edit_user_nickname">昵称</string>
+    <string name="text_edit_user_id">ID</string>
+    <string name="text_edit_user_sign">个人签名</string>
+    <string name="text_button_edit_save">保存</string>
+    <string name="toast_get_user_information_error">获取用户信息失败</string>
+    <string name="toast_upate_user_information_success">修改成功</string>
+    <string name="toast_upate_user_information_error">修改失败</string>
+
+    <!--EditInformationActivity-->
+    <string name="title_edit_user_nickname">修改昵称</string>
+    <string name="title_edit_user_sign">修改个人签名</string>
+    <string name="text_hint_user_nickname">请输入昵称</string>
+    <string name="text_hint_user_sign">请输入个人签名</string>
+    <string name="text_button_save_information">保存</string>
+    <string name="toast_content_is_null">输入内容不能为空</string>
 </resources>
