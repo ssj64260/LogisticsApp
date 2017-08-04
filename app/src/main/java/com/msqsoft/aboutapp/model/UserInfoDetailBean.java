@@ -50,6 +50,13 @@ public class UserInfoDetailBean {
     @Ignore
     private List<CommentBean> user_comment;
 
+    public void setUserInfo(UserInfoDetailBean newUserInfo) {
+        setUser_nicename(newUserInfo.getUser_nicename());
+        setAvatar(newUserInfo.getAvatar());
+        setSignature(newUserInfo.getSignature());
+        setMobile(newUserInfo.getMobile());
+    }
+
     public void setCourierInfo(UserInfoDetailBean courierInfo) {
         setLongitude(courierInfo.getLongitude());
         setLatitude(courierInfo.getLatitude());

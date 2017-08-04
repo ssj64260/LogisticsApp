@@ -203,10 +203,12 @@ public class LoginActivity extends BaseAppCompatActivity {
                                 if ("100".equals(result.getResultCode())) {
                                     mUserInfo = result.getResultData();
                                     if (mUserInfo != null) {
-                                        mUserInfo.getAccess_token();
-                                        final String token = Config.TEST_TOKEN;
-
-                                        PreferencesUtil.setData(Config.USER_INFO, Config.KEY_RONGIM_TOKEN, token);
+                                        final String userId = mUserInfo.getId();
+                                        PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, userId);
+                                        final String token = mUserInfo.getAccess_token();
+                                        PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, token);
+                                        final String rongIMToken = Config.TEST_TOKEN;
+                                        PreferencesUtil.setData(Config.USER_INFO, Config.KEY_RONGIM_TOKEN, rongIMToken);
                                         doConnectRongIM(mIMCallback);
                                     }
                                 } else {

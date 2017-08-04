@@ -58,6 +58,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
                     DataCleanManager.deleteAllFiles(new File(cacheDir));
                     DataCleanManager.deleteAllFiles(new File(externalCacheDir));
                     getCacheSize();
+                    ToastMaster.toast(getString(R.string.toast_clean_cache_finish));
                     break;
                 case R.id.tv_login_out:
                     doLoginOut();

@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseFragment;
+import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.ServiceClient;
+import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 import com.msqsoft.aboutapp.widget.imageloader.GlideCircleTransform;
 import com.msqsoft.aboutapp.widget.imageloader.ImageLoaderFactory;
@@ -206,35 +208,33 @@ public class MineFragment extends BaseFragment {
     }
 
     private void getUserInfoDetail() {
-        final UserInfoDetailBean userInfo = getUserInfo();
-        if (userInfo != null) {
-            final String currentUserId = userInfo.getId();
-            final String token = userInfo.getAccess_token();
-            if (!TextUtils.isEmpty(currentUserId)) {
-                showProgress(getString(R.string.text_progress_loading));
-                ServiceClient.getService().getUserInfoDetail(token, currentUserId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                new Consumer<ServiceResult<UserInfoDetailBean>>() {
-                                    @Override
-                                    public void accept(@NonNull ServiceResult<UserInfoDetailBean> result) throws Exception {
-                                        if ("100".equals(result.getResultCode())) {
-                                            final UserInfoDetailBean newUserInfo = result.getResultData();
-                                            if (newUserInfo != null) {
-                                                updateUserInfo(newUserInfo);
-                                                setUserInfo(newUserInfo);
-                                            }
+        final String currentUserId = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, "");
+        final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+        if (!TextUtils.isEmpty(currentUserId)) {
+            showProgress(getString(R.string.text_progress_loading));
+            ServiceClient.getService().getUserInfoDetail(token, currentUserId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            new Consumer<ServiceResult<UserInfoDetailBean>>() {
+                                @Override
+                                public void accept(@NonNull ServiceResult<UserInfoDetailBean> result) throws Exception {
+                                    if ("100".equals(result.getResultCode())) {
+                                        final UserInfoDetailBean newUserInfo = result.getResultData();
+                                        if (newUserInfo != null) {
+                                            updateUserInfo(newUserInfo);
+                                            updateCourierInfo(newUserInfo);
+                                            setUserInfo(newUserInfo);
                                         }
                                     }
-                                },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(@NonNull Throwable throwable) throws Exception {
+                                }
+                            },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
 
-                                    }
-                                });
-            }
+                                }
+                            });
         }
     }
 

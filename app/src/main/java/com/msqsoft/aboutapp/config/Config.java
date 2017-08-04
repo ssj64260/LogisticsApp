@@ -16,5 +16,7 @@ public class Config {
     public static final String USER_INFO = "user_info";//用户信息
     public static final String KEY_LAST_LOGIN_USER = "key_last_login_user";//最后登录用户的账号
     public static final String KEY_RONGIM_TOKEN = "key_rongim_token";//连接融云token
+    public static final String KEY_ABOUTAPP_TOKEN = "key_aboutapp_token";//物流APPtoken
+    public static final String KEY_ABOUTAPP_USER_ID = "key_aboutapp_user_id";//物流APP用户ID
 
 }

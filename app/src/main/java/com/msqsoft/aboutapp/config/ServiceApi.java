@@ -7,11 +7,14 @@ import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * 网络请求接口 api
@@ -50,4 +53,8 @@ public interface ServiceApi {
     @POST("?g=WebApi&m=user&a=updateUserInfo")//修改用户昵称，个人签名，手机号
     @FormUrlEncoded
     Observable<ServiceResult> updateUserInfo(@Header("apiToken") String token, @Field("user_nicename") String nickname, @Field("signature") String sign, @Field("mobile") String mobile);
+
+    @POST("?g=WebApi&m=user&a=avatarUpload")//上传头像
+    @Multipart
+    Observable<ServiceResult> uploadUserAvatar(@Header("apiToken") String token, @Part MultipartBody.Part file);
 }

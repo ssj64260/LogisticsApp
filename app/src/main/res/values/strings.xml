@@ -6,6 +6,7 @@
     <string name="text_progress_loading">加载中&#8230;</string>
     <string name="text_progress_committing">提交中&#8230;</string>
     <string name="text_progress_requesting">请求中&#8230;</string>
+    <string name="text_progress_uploading">上传中&#8230;</string>
 
     <!--MainActivity-->
     <string name="tab_order_text">周边订单</string>
@@ -82,6 +83,7 @@
     <string name="text_current_version">当前版本V%s</string>
     <string name="text_clean_cache">清除缓存</string>
     <string name="text_button_login_out">退出登录</string>
+    <string name="toast_clean_cache_finish">已清除缓存</string>
 
     <!--EditUserInfoActivity-->
     <string name="title_edit_user_information">修改个人资料</string>
@@ -90,9 +92,10 @@
     <string name="text_edit_user_id">ID</string>
     <string name="text_edit_user_sign">个人签名</string>
     <string name="text_button_edit_save">保存</string>
-    <string name="toast_get_user_information_error">获取用户信息失败</string>
     <string name="toast_upate_user_information_success">修改成功</string>
     <string name="toast_upate_user_information_error">修改失败</string>
+    <string name="toast_file_is_not_exists">文件不存在</string>
+    <string name="toast_upload_avatar_error">上传头像失败</string>
 
     <!--EditInformationActivity-->
     <string name="title_edit_user_nickname">修改昵称</string>

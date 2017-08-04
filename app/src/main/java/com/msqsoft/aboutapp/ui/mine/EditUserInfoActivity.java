@@ -8,19 +8,31 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.compress.Luban;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
+import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.ServiceClient;
+import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 import com.msqsoft.aboutapp.widget.imageloader.GlideCircleTransform;
 import com.msqsoft.aboutapp.widget.imageloader.ImageLoaderFactory;
+
+import java.io.File;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * 修改个人资料
@@ -49,7 +61,7 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
                     onBackPressed();
                     break;
                 case R.id.iv_user_avatar:
-
+                    showPhotoDialog();
                     break;
                 case R.id.rl_user_nickname:
                     toEditInformation(REQUEST_CODE_NICKNAME);
@@ -71,6 +83,7 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
 
         initData();
         initView();
+        setData();
         getUserInfoDetail();
 
     }
@@ -84,6 +97,24 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
                 tvNickname.setText(resultData);
             } else if (requestCode == REQUEST_CODE_SIGN) {
                 tvUserSign.setText(resultData);
+            } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                if (selectList != null) {
+                    String avatarPath;
+                    for (LocalMedia media : selectList) {
+                        if (media.isCompressed()) {
+                            avatarPath = media.getCompressPath();
+                        } else if (media.isCut()) {
+                            avatarPath = media.getCutPath();
+                        } else {
+                            avatarPath = media.getPath();
+                        }
+                        if (!TextUtils.isEmpty(avatarPath)) {
+                            uploadUserAvatar(avatarPath);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -109,6 +140,11 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
         rlUserSign = (RelativeLayout) findViewById(R.id.rl_user_sign);
         tvUserSign = (TextView) findViewById(R.id.tv_user_sign);
         tvSave = (TextView) findViewById(R.id.tv_save);
+    }
+
+    private void setData() {
+        final UserInfoDetailBean userInfo = getUserInfo();
+        setUserInfo(userInfo);
     }
 
     private void setUserInfo(UserInfoDetailBean userInfo) {
@@ -147,64 +183,46 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
         startActivityForResult(intent, requestCode);
     }
 
-    private void getUserInfoDetail() {
-        final UserInfoDetailBean userInfo = getUserInfo();
-        if (userInfo != null) {
-            final String currentUserId = userInfo.getId();
-            final String token = userInfo.getAccess_token();
-            if (!TextUtils.isEmpty(currentUserId)) {
-                showProgress(getString(R.string.text_progress_loading));
-                ServiceClient.getService().getUserInfoDetail(token, currentUserId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                new Consumer<ServiceResult<UserInfoDetailBean>>() {
-                                    @Override
-                                    public void accept(@NonNull ServiceResult<UserInfoDetailBean> result) throws Exception {
-                                        if ("100".equals(result.getResultCode())) {
-                                            final UserInfoDetailBean newUserInfo = result.getResultData();
-                                            if (newUserInfo != null) {
-                                                setUserInfo(newUserInfo);
-                                            }
-                                        } else {
-                                            ToastMaster.toast(result.getResultMsg());
-                                        }
-                                        hideProgress();
-                                    }
-                                },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(@NonNull Throwable throwable) throws Exception {
-                                        ToastMaster.toast(getString(R.string.toast_get_user_information_error));
-                                        hideProgress();
-                                    }
-                                });
-            }
-        }
+    private void showPhotoDialog() {
+        PictureSelector.create(EditUserInfoActivity.this)
+                .openGallery(PictureMimeType.ofImage())
+                .theme(R.style.picture_default_style)
+                .maxSelectNum(1)
+                .minSelectNum(1)
+                .imageSpanCount(3)
+                .selectionMode(PictureConfig.SINGLE)
+                .previewImage(false)
+                .compressGrade(Luban.THIRD_GEAR)
+                .isCamera(false)
+                .isZoomAnim(false)
+                .enableCrop(true)
+                .compress(true)
+                .compressMode(PictureConfig.LUBAN_COMPRESS_MODE)
+                .glideOverride(160, 160)
+                .withAspectRatio(1, 1)
+                .freeStyleCropEnabled(false)
+                .showCropFrame(true)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
     }
 
-    private void updateUserInfo() {
-        final UserInfoDetailBean userInfo = getUserInfo();
-        if (userInfo != null) {
-            final String token = userInfo.getAccess_token();
-            final String nickname = tvNickname.getText().toString();
-            final String sign = tvUserSign.getText().toString();
-            showProgress(getString(R.string.text_progress_committing));
-            ServiceClient.getService().updateUserInfo(token, nickname, sign, "")
+    private void getUserInfoDetail() {
+        final String currentUserId = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, "");
+        final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+        if (!TextUtils.isEmpty(currentUserId)) {
+            showProgress(getString(R.string.text_progress_loading));
+            ServiceClient.getService().getUserInfoDetail(token, currentUserId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            new Consumer<ServiceResult>() {
+                            new Consumer<ServiceResult<UserInfoDetailBean>>() {
                                 @Override
-                                public void accept(@NonNull ServiceResult result) throws Exception {
+                                public void accept(@NonNull ServiceResult<UserInfoDetailBean> result) throws Exception {
                                     if ("100".equals(result.getResultCode())) {
-                                        userInfo.setUser_nicename(nickname);
-                                        userInfo.setSignature(sign);
-                                        updateUserInfo(userInfo);
-                                        ToastMaster.toast(getString(R.string.toast_upate_user_information_success));
-                                        onBackPressed();
-                                    } else {
-                                        ToastMaster.toast(result.getResultMsg());
+                                        final UserInfoDetailBean newUserInfo = result.getResultData();
+                                        if (newUserInfo != null) {
+                                            updateUserInfo(newUserInfo);
+                                            setUserInfo(newUserInfo);
+                                        }
                                     }
                                     hideProgress();
                                 }
@@ -212,10 +230,77 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
                             new Consumer<Throwable>() {
                                 @Override
                                 public void accept(@NonNull Throwable throwable) throws Exception {
-                                    ToastMaster.toast(getString(R.string.toast_upate_user_information_error));
                                     hideProgress();
                                 }
                             });
+        }
+    }
+
+    private void updateUserInfo() {
+        final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+        final String nickname = tvNickname.getText().toString();
+        final String sign = tvUserSign.getText().toString();
+        showProgress(getString(R.string.text_progress_committing));
+        ServiceClient.getService().updateUserInfo(token, nickname, sign, "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<ServiceResult>() {
+                            @Override
+                            public void accept(@NonNull ServiceResult result) throws Exception {
+                                if ("100".equals(result.getResultCode())) {
+                                    final UserInfoDetailBean userInfo = getUserInfo();
+                                    userInfo.setUser_nicename(nickname);
+                                    userInfo.setSignature(sign);
+                                    updateUserInfo(userInfo);
+                                    ToastMaster.toast(getString(R.string.toast_upate_user_information_success));
+                                    onBackPressed();
+                                } else {
+                                    ToastMaster.toast(result.getResultMsg());
+                                }
+                                hideProgress();
+                            }
+                        },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                ToastMaster.toast(getString(R.string.toast_upate_user_information_error));
+                                hideProgress();
+                            }
+                        });
+    }
+
+    private void uploadUserAvatar(String avatarPath) {
+        final File file = new File(avatarPath);
+        if (file.exists()) {
+            showProgress(getString(R.string.text_progress_uploading));
+            final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+            RequestBody requestFile = RequestBody.create(MultipartBody.FORM, file);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            ServiceClient.getService().uploadUserAvatar(token, part)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            new Consumer<ServiceResult>() {
+                                @Override
+                                public void accept(@NonNull ServiceResult result) throws Exception {
+                                    hideProgress();
+                                    ToastMaster.toast(result.getResultMsg());
+                                    if ("100".equals(result.getResultCode())) {
+                                        getUserInfoDetail();
+                                    }
+                                }
+                            },
+                            new Consumer<Throwable>() {
+                                @Override
+                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                    ToastMaster.toast(getString(R.string.toast_upload_avatar_error));
+                                    hideProgress();
+                                }
+                            });
+
+        } else {
+            ToastMaster.toast(getString(R.string.toast_file_is_not_exists));
         }
     }
 }
