@@ -129,6 +129,7 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void getBannerList() {
+        //TODO 封装
         ServiceClient.getService().getBannerList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

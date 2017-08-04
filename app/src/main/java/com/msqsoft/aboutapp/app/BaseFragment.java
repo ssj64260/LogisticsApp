@@ -67,8 +67,6 @@ public class BaseFragment extends Fragment {
         final LiteOrmHelper dbHelper = new LiteOrmHelper(APP.getInstance());
         dbHelper.deleteAll(UserInfoDetailBean.class);
         dbHelper.closeDB();
-
-        //TODO 返回MainActivity
     }
 
     protected void showProgress(String message) {
