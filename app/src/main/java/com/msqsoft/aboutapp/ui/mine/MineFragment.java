@@ -211,7 +211,7 @@ public class MineFragment extends BaseFragment {
             final String currentUserId = userInfo.getId();
             final String token = userInfo.getAccess_token();
             if (!TextUtils.isEmpty(currentUserId)) {
-                showProgress("");
+                showProgress(getString(R.string.text_progress_loading));
                 ServiceClient.getService().getUserInfoDetail(token, currentUserId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

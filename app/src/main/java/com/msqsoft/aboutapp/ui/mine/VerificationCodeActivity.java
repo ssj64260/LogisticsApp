@@ -30,7 +30,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 注册页面 or 忘记密码 TODO输入框清除按钮
+ * 注册页面 or 忘记密码
  */
 
 public class VerificationCodeActivity extends BaseAppCompatActivity {
@@ -181,7 +181,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
         if (!StringCheck.isMobileNO(mobile)) {
             ToastMaster.toast(getString(R.string.toast_phone_number_error));
         } else {
-            showProgress("");
+            showProgress(getString(R.string.text_progress_requesting));
             final Observable<ServiceResult> observable;
             if (mIsRegister) {
                 observable = ServiceClient.getService().getRegisterVerificationCode(mobile);

@@ -137,7 +137,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             ToastMaster.toast(getString(R.string.toast_passowrd_is_null));
         } else {
-            showProgress("");
+            showProgress(getString(R.string.text_progress_committing));
             ServiceClient.getService().doRegister(mPhoneNum, mCode, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -170,7 +170,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             ToastMaster.toast(getString(R.string.toast_passowrd_is_null));
         } else {
-            showProgress("");
+            showProgress(getString(R.string.text_progress_committing));
             ServiceClient.getService().doSetPassword(mPhoneNum, mCode, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

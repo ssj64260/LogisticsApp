@@ -3,6 +3,9 @@
 
     <!--DefaultProgressDialog-->
     <string name="text_progress_logining">登录中&#8230;</string>
+    <string name="text_progress_loading">加载中&#8230;</string>
+    <string name="text_progress_committing">提交中&#8230;</string>
+    <string name="text_progress_requesting">请求中&#8230;</string>
 
     <!--MainActivity-->
     <string name="tab_order_text">周边订单</string>

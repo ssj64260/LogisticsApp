@@ -153,7 +153,7 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
             final String currentUserId = userInfo.getId();
             final String token = userInfo.getAccess_token();
             if (!TextUtils.isEmpty(currentUserId)) {
-                showProgress("");
+                showProgress(getString(R.string.text_progress_loading));
                 ServiceClient.getService().getUserInfoDetail(token, currentUserId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -189,7 +189,7 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
             final String token = userInfo.getAccess_token();
             final String nickname = tvNickname.getText().toString();
             final String sign = tvUserSign.getText().toString();
-            showProgress("");
+            showProgress(getString(R.string.text_progress_committing));
             ServiceClient.getService().updateUserInfo(token, nickname, sign, "")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
