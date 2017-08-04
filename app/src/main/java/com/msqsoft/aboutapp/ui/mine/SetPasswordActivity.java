@@ -153,6 +153,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                             new Consumer<ServiceResult>() {
                                 @Override
                                 public void accept(@NonNull ServiceResult result) throws Exception {
+                                    hideProgress();
                                     final String code = result.getResultCode();
                                     if ("100".equals(code)) {
                                         ToastMaster.toast(getString(R.string.toast_register_success));
@@ -160,7 +161,6 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                                     } else {
                                         ToastMaster.toast(result.getResultMsg());
                                     }
-                                    hideProgress();
                                 }
                             },
                             new Consumer<Throwable>() {
@@ -186,6 +186,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                             new Consumer<ServiceResult>() {
                                 @Override
                                 public void accept(@NonNull ServiceResult result) throws Exception {
+                                    hideProgress();
                                     final String code = result.getResultCode();
                                     if ("100".equals(code)) {
                                         ToastMaster.toast(getString(R.string.toast_set_password_success));
@@ -193,7 +194,6 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                                     } else {
                                         ToastMaster.toast(result.getResultMsg());
                                     }
-                                    hideProgress();
                                 }
                             },
                             new Consumer<Throwable>() {
@@ -220,6 +220,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                             new Consumer<ServiceResult>() {
                                 @Override
                                 public void accept(@NonNull ServiceResult result) throws Exception {
+                                    hideProgress();
                                     final String code = result.getResultCode();
                                     if ("100".equals(code)) {
                                         ToastMaster.toast(getString(R.string.toast_change_password_success));
@@ -227,7 +228,6 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                                     } else {
                                         ToastMaster.toast(result.getResultMsg());
                                     }
-                                    hideProgress();
                                 }
                             },
                             new Consumer<Throwable>() {

@@ -203,8 +203,6 @@ public class MineFragment extends BaseFragment {
         llRegistered.setOnClickListener(click);
         llCourierOrder.setOnClickListener(click);
         llService.setOnClickListener(click);
-
-        hideProgress();
     }
 
     private void getUserInfoDetail() {
@@ -227,6 +225,7 @@ public class MineFragment extends BaseFragment {
                                             setUserInfo(newUserInfo);
                                         }
                                     }
+                                    hideProgress();
                                 }
                             },
                             new Consumer<Throwable>() {
