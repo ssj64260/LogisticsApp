@@ -3,6 +3,7 @@ package com.msqsoft.aboutapp.ui.mine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -31,6 +32,7 @@ public class EditInformationActivity extends BaseAppCompatActivity {
 
     private String mTitle;
     private String mEditHint;
+    private int mMaxLength;
     private String mInformation;
 
     private View.OnClickListener click = new View.OnClickListener() {
@@ -101,9 +103,11 @@ public class EditInformationActivity extends BaseAppCompatActivity {
         if (ACTIVITY_TYPE_NICKNAME.equals(tpye)) {
             mTitle = getString(R.string.title_edit_user_nickname);
             mEditHint = getString(R.string.text_hint_user_nickname);
+            mMaxLength = 10;
         } else if (ACTIVITY_TYPE_SIGN.equals(tpye)) {
             mTitle = getString(R.string.title_edit_user_sign);
             mEditHint = getString(R.string.text_hint_user_sign);
+            mMaxLength = 15;
         }
     }
 
@@ -127,8 +131,10 @@ public class EditInformationActivity extends BaseAppCompatActivity {
         tvSave.setOnClickListener(click);
 
         etInformation.setHint(mEditHint);
+        etInformation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mMaxLength)});
         if (!TextUtils.isEmpty(mInformation)) {
             etInformation.setText(mInformation);
+            etInformation.setSelection(mInformation.length());
         } else {
             tvSave.setEnabled(false);
         }
