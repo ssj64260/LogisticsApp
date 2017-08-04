@@ -1,7 +1,10 @@
 package com.msqsoft.aboutapp.ui.mine;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,7 +47,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
                     startActivity(new Intent(UserSettingsActivity.this, EditUserInfoActivity.class));
                     break;
                 case R.id.ll_change_password:
-                    ToastMaster.toast(getString(R.string.text_change_password));
+                    startActivity(new Intent(UserSettingsActivity.this, ChangePasswordActivity.class));
                     break;
                 case R.id.ll_change_phone:
                     ToastMaster.toast(getString(R.string.text_change_bind_phone));
@@ -61,11 +64,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
                     ToastMaster.toast(getString(R.string.toast_clean_cache_finish));
                     break;
                 case R.id.tv_login_out:
-                    doLoginOut();
-                    Intent intent = new Intent();
-                    intent.setClass(UserSettingsActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    showAlertDialog();
                     break;
             }
         }
@@ -129,6 +128,28 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
 
         final String cache = FileUtil.FormatFileSize(this, cacheSize);
         tvCache.setText(cache);
+    }
+
+    private void showAlertDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.setMessage(getString(R.string.text_dialog_message));
+        dialog.setButton(Dialog.BUTTON_POSITIVE, getString(R.string.text_dialog_button_do_login_out), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                doLoginOut();
+                Intent intent = new Intent();
+                intent.setClass(UserSettingsActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        dialog.setButton(Dialog.BUTTON_NEGATIVE, getString(R.string.text_dialog_button_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        dialog.show();
     }
 
 }

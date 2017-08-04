@@ -47,6 +47,8 @@
     <string name="toast_passowrd_is_null">密码不能为空</string>
     <string name="toast_set_password_success">设置密码成功</string>
     <string name="toast_set_password_error">设置密码失败</string>
+    <string name="toast_change_password_success">修改密码成功</string>
+    <string name="toast_change_password_error">修改密码失败</string>
     <string name="toast_register_success">注册成功</string>
     <string name="toast_register_error">注册失败</string>
 
@@ -83,6 +85,9 @@
     <string name="text_current_version">当前版本V%s</string>
     <string name="text_clean_cache">清除缓存</string>
     <string name="text_button_login_out">退出登录</string>
+    <string name="text_dialog_message">是否退出登录？</string>
+    <string name="text_dialog_button_do_login_out">退出登录</string>
+    <string name="text_dialog_button_cancel">取消</string>
     <string name="toast_clean_cache_finish">已清除缓存</string>
 
     <!--EditUserInfoActivity-->
@@ -100,8 +105,18 @@
     <!--EditInformationActivity-->
     <string name="title_edit_user_nickname">修改昵称</string>
     <string name="title_edit_user_sign">修改个人签名</string>
-    <string name="text_hint_user_nickname">请输入昵称</string>
-    <string name="text_hint_user_sign">请输入个人签名</string>
+    <string name="text_hint_user_nickname">请填写昵称</string>
+    <string name="text_hint_user_sign">请填写个人签名</string>
     <string name="text_button_save_information">保存</string>
-    <string name="toast_content_is_null">输入内容不能为空</string>
+    <string name="toast_content_is_null">填写的内容不能为空</string>
+
+    <!--ChangePasswordActivity-->
+    <string name="title_change_password">修改密码</string>
+    <string name="text_tips_input_phone_code">请输入%s收到的验证码</string>
+    <string name="text_hint_change_password_input_code">请填写验证码</string>
+    <string name="text_cp_button_get_verification_code">获取验证码</string>
+    <string name="text_cp_button_count_down">%d秒后重发</string>
+    <string name="text_button_change_password_next_step">下一步</string>
+    <string name="toast_not_bind_phone">没有绑定手机号码</string>
+
 </resources>

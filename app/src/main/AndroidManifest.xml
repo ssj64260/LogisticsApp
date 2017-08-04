@@ -85,6 +85,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.mine.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.contacts.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">

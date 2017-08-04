@@ -78,8 +78,6 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         final LiteOrmHelper dbHelper = new LiteOrmHelper(this);
         dbHelper.deleteAll(UserInfoDetailBean.class);
         dbHelper.closeDB();
-
-        //TODO 返回MainActivity
     }
 
     protected void doConnectRongIM(RongIMClient.ConnectCallback callback) {

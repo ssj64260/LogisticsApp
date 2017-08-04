@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FFE500</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#181818</color>
 
     <!--100%    FF-->
     <!--95% 	F2-->

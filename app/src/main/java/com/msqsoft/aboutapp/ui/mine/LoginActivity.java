@@ -19,7 +19,6 @@ import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
-import com.orhanobut.logger.Logger;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -45,7 +44,13 @@ public class LoginActivity extends BaseAppCompatActivity {
     private RongIMClient.ConnectCallback mIMCallback = new RongIMClient.ConnectCallback() {
         @Override
         public void onTokenIncorrect() {
-            ToastMaster.toast(getString(R.string.toast_token_error));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ToastMaster.toast(getString(R.string.toast_token_error));
+                    hideProgress();
+                }
+            });
         }
 
         @Override
@@ -61,8 +66,8 @@ public class LoginActivity extends BaseAppCompatActivity {
 
         @Override
         public void onError(RongIMClient.ErrorCode errorCode) {
-            Logger.d("ErrorCode：" + errorCode.getValue() + "\nErrorMessage：" + errorCode.getMessage());
-            ToastMaster.toast(getString(R.string.toast_login_error));
+            ToastMaster.toast(getString(R.string.toast_login_error) + "\nErrorCode：" + errorCode.getValue() + "\nErrorMessage：" + errorCode.getMessage());
+            hideProgress();
         }
     };
 
@@ -76,7 +81,9 @@ public class LoginActivity extends BaseAppCompatActivity {
                     break;
                 case R.id.tv_toolbar_action:
                     hideKeyboard();
-                    startActivity(new Intent(LoginActivity.this, VerificationCodeActivity.class));
+                    startActivity(
+                            new Intent(LoginActivity.this, VerificationCodeActivity.class)
+                                    .putExtra(SetPasswordActivity.TYPE_SET_PASSWORD, SetPasswordActivity.TYPE_REGISTER_PASSWORD));
                     break;
                 case R.id.iv_clear_phone:
                     etPhoneNumber.setText("");
@@ -92,7 +99,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                     hideKeyboard();
                     startActivity(
                             new Intent(LoginActivity.this, VerificationCodeActivity.class)
-                                    .putExtra(Config.ACTIVITY_TYPE_IS_REGISTER, false));
+                                    .putExtra(SetPasswordActivity.TYPE_SET_PASSWORD, SetPasswordActivity.TYPE_FORGET_PASSWORD));
                     break;
             }
         }
@@ -212,10 +219,9 @@ public class LoginActivity extends BaseAppCompatActivity {
                                         doConnectRongIM(mIMCallback);
                                     }
                                 } else {
+                                    hideProgress();
                                     ToastMaster.toast(result.getResultMsg());
                                 }
-
-                                hideProgress();
                             }
                         },
                         new Consumer<Throwable>() {

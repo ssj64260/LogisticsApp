@@ -39,7 +39,12 @@ public class ChatActivity extends BaseAppCompatActivity {
     private RongIMClient.ConnectCallback mIMCallback = new RongIMClient.ConnectCallback() {
         @Override
         public void onTokenIncorrect() {
-            hideProgress();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgress();
+                }
+            });
         }
 
         @Override

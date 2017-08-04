@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
-import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.FastClick;
@@ -29,13 +28,13 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.msqsoft.aboutapp.config.Config.COUNT_DOWN_TIME;
+
 /**
  * 注册页面 or 忘记密码
  */
 
 public class VerificationCodeActivity extends BaseAppCompatActivity {
-
-    private static final int COUNT_DOWN_TIME = 60;//倒计时总时间
 
     private EditText etPhone;
     private ImageView ivClearPhone;
@@ -44,7 +43,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
     private TextView tvGetCode;
     private TextView tvNextStep;
 
-    private boolean mIsRegister;
+    private int mSetPasswordType;
 
     private View.OnClickListener click = new View.OnClickListener() {
         @Override
@@ -53,6 +52,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
                 switch (v.getId()) {
                     case R.id.iv_toolbar_back:
                     case R.id.tv_toolbar_action:
+                        hideKeyboard();
                         onBackPressed();
                         break;
                     case R.id.iv_clear_phone:
@@ -69,7 +69,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
                         final String code = etCode.getText().toString().trim();
                         Intent intent = new Intent();
                         intent.setClass(VerificationCodeActivity.this, SetPasswordActivity.class);
-                        intent.putExtra(Config.ACTIVITY_TYPE_IS_REGISTER, mIsRegister);
+                        intent.putExtra(SetPasswordActivity.TYPE_SET_PASSWORD, mSetPasswordType);
                         intent.putExtra(SetPasswordActivity.KEY_PHONE_NUMBER, phoneNum);
                         intent.putExtra(SetPasswordActivity.KEY_VERIFICATION_CODE, code);
                         startActivity(intent);
@@ -121,7 +121,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
     }
 
     private void initData() {
-        mIsRegister = getIntent().getBooleanExtra(Config.ACTIVITY_TYPE_IS_REGISTER, true);
+        mSetPasswordType = getIntent().getIntExtra(SetPasswordActivity.TYPE_SET_PASSWORD, SetPasswordActivity.TYPE_REGISTER_PASSWORD);
     }
 
     private void initToolbar() {
@@ -130,7 +130,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
         final TextView tvAction = (TextView) findViewById(R.id.tv_toolbar_action);
 
         ivBack.setOnClickListener(click);
-        if (mIsRegister) {
+        if (mSetPasswordType == SetPasswordActivity.TYPE_REGISTER_PASSWORD) {
             tvTitle.setText(getString(R.string.title_register));
             tvAction.setText(getString(R.string.text_to_login));
             tvAction.setVisibility(View.VISIBLE);
@@ -183,7 +183,7 @@ public class VerificationCodeActivity extends BaseAppCompatActivity {
         } else {
             showProgress(getString(R.string.text_progress_requesting));
             final Observable<ServiceResult> observable;
-            if (mIsRegister) {
+            if (mSetPasswordType == SetPasswordActivity.TYPE_REGISTER_PASSWORD) {
                 observable = ServiceClient.getService().getRegisterVerificationCode(mobile);
             } else {
                 observable = ServiceClient.getService().getVerificationCode(mobile);

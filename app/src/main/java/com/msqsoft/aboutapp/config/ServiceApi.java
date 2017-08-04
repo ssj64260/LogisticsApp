@@ -40,7 +40,7 @@ public interface ServiceApi {
 
     @POST("?g=WebApi&m=user&a=ForgetPwd")//重置密码
     @FormUrlEncoded
-    Observable<ServiceResult> doSetPassword(@Field("mobile") String mobile, @Field("code") String code, @Field("pwd") String password);
+    Observable<ServiceResult> doResetPassword(@Field("mobile") String mobile, @Field("code") String code, @Field("pwd") String password);
 
     @POST("?g=WebApi&m=login&a=mobilesSignUp")//注册
     @FormUrlEncoded
@@ -57,4 +57,8 @@ public interface ServiceApi {
     @POST("?g=WebApi&m=user&a=avatarUpload")//上传头像
     @Multipart
     Observable<ServiceResult> uploadUserAvatar(@Header("apiToken") String token, @Part MultipartBody.Part file);
+
+    @POST("?g=WebApi&m=user&a=resetPwd")//修改密码
+    @FormUrlEncoded
+    Observable<ServiceResult> doChangePassword(@Header("apiToken") String token, @Field("code") String code, @Field("pwd") String password);
 }

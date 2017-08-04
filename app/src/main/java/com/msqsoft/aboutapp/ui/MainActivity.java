@@ -53,17 +53,18 @@ public class MainActivity extends BaseAppCompatActivity implements RongIM.UserIn
     private RongIMClient.ConnectCallback mIMCallback = new RongIMClient.ConnectCallback() {
         @Override
         public void onTokenIncorrect() {
-
+            Logger.d("onTokenIncorrect\n" + Thread.currentThread().getName());
         }
 
         @Override
         public void onSuccess(String s) {
             RongIM.setUserInfoProvider(MainActivity.this, true);
+            Logger.d("onSuccess\n" + Thread.currentThread().getName());
         }
 
         @Override
         public void onError(RongIMClient.ErrorCode errorCode) {
-
+            Logger.d("onError\n" + Thread.currentThread().getName());
         }
     };
 

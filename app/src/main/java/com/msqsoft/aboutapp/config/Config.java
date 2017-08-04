@@ -7,9 +7,9 @@ package com.msqsoft.aboutapp.config;
 public class Config {
 
     public static final String TEST_TOKEN = "fuhJ0Fwedcn+oLolIf3IT3Ift83tBRvTpflwsJy7HDx2w6J7FMLR/EbJGXWzl0e4w+bD7k+ntE/nhRAeIpq3tw==";
+//    public static final String TEST_TOKEN = "fuhJ0Fwedcn+oLolIf3IT3Ift83tBRvTpf";
 
-    //通用Activity传值Key字段名
-    public static final String ACTIVITY_TYPE_IS_REGISTER = "type_is_register";//是否注册用，否则是忘记密码
+    public static final int COUNT_DOWN_TIME = 60;//倒计时总时间
 
     //SharePreferences相关
     public static final String APP_SETTING = "app_setting";//app设置
