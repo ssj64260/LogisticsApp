@@ -55,4 +55,5 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.9'
     compile files('libs/lite-orm-1.9.2.jar')
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.0'
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
 }

@@ -20,12 +20,15 @@ import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
+import com.msqsoft.aboutapp.ui.adapter.OnListClickListener;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
+import com.msqsoft.aboutapp.widget.ListSelectDialog;
 import com.msqsoft.aboutapp.widget.imageloader.GlideCircleTransform;
 import com.msqsoft.aboutapp.widget.imageloader.ImageLoaderFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -51,7 +54,10 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
     private TextView tvUserSign;
     private TextView tvSave;
 
+    private ListSelectDialog mListDialog;
+    private List<String> mButtonNames;
     private GlideCircleTransform mTransform;
+    private String mAvatarUrl;
 
     private View.OnClickListener click = new View.OnClickListener() {
         @Override
@@ -149,13 +155,13 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
 
     private void setUserInfo(UserInfoDetailBean userInfo) {
         final String id = userInfo.getId();
-        final String avatarURL = userInfo.getAvatar();
+        mAvatarUrl = userInfo.getAvatar();
         final String name = userInfo.getUser_nicename();
         final String sign = userInfo.getSignature();
 
         ImageLoaderFactory
                 .getLoader()
-                .loadImageFitCenter(this, ivUserAvatar, avatarURL, mTransform);
+                .loadImageFitCenter(this, ivUserAvatar, mAvatarUrl, mTransform);
         tvNickname.setText(name);
         tvUserId.setText(id);
         tvUserSign.setText(sign);
@@ -184,7 +190,58 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
     }
 
     private void showPhotoDialog() {
-        //TODO
+        if (mListDialog == null) {
+            mListDialog = new ListSelectDialog(this);
+            mListDialog.setListClick(new OnListClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    switch (position) {
+                        case 0:
+                            startActivity(new Intent(EditUserInfoActivity.this, ShowImageActivity.class)
+                                    .putExtra(ShowImageActivity.URL_IMAGE, mAvatarUrl));
+                            break;
+                        case 1:
+                            takePhoto();
+                            break;
+                        case 2:
+                            selectPhoto();
+                            break;
+                    }
+                    mListDialog.dismiss();
+                }
+
+                @Override
+                public void onTagClick(@ItemView int tag, int position) {
+
+                }
+            });
+
+            mButtonNames = new ArrayList<>();
+            mButtonNames.add(getString(R.string.text_list_dialog_show_avatar));
+            mButtonNames.add(getString(R.string.text_list_dialog_take_photo));
+            mButtonNames.add(getString(R.string.text_list_dialog_select_photo));
+            mButtonNames.add(getString(R.string.text_list_dialog_cancel));
+        }
+        mListDialog.show();
+
+        mListDialog.setListData(mButtonNames);
+    }
+
+    private void takePhoto() {
+        PictureSelector.create(EditUserInfoActivity.this)
+                .openCamera(PictureMimeType.ofImage())
+                .theme(R.style.picture_default_style)
+                .compressGrade(Luban.THIRD_GEAR)
+                .enableCrop(true)
+                .compress(true)
+                .compressMode(PictureConfig.LUBAN_COMPRESS_MODE)
+                .withAspectRatio(1, 1)
+                .freeStyleCropEnabled(false)
+                .showCropFrame(true)
+                .forResult(PictureConfig.CHOOSE_REQUEST);
+    }
+
+    private void selectPhoto() {
         PictureSelector.create(EditUserInfoActivity.this)
                 .openGallery(PictureMimeType.ofImage())
                 .theme(R.style.picture_default_style)

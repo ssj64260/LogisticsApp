@@ -67,8 +67,6 @@ public class UpdateAppUtils {
 
     public void showUpdateDialog() {
         alertDialog = new TipsAlertDialog(mContext);
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
         alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override

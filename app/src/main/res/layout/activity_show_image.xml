@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_toolbar" />
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/pv_picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_333333" />
+
+</LinearLayout>

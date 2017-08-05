@@ -96,8 +96,15 @@
     <string name="text_edit_user_id">ID</string>
     <string name="text_edit_user_sign">个人签名</string>
     <string name="text_button_edit_save">保存</string>
+    <string name="text_list_dialog_show_avatar">查看头像大图</string>
+    <string name="text_list_dialog_take_photo">拍照换头像</string>
+    <string name="text_list_dialog_select_photo">从相册选择新头像</string>
+    <string name="text_list_dialog_cancel">取消</string>
     <string name="toast_upate_user_information_success">修改成功</string>
     <string name="toast_file_is_not_exists">文件不存在</string>
+
+    <!--ShowImageActivity-->
+    <string name="title_show_image">查看大图</string>
 
     <!--EditInformationActivity-->
     <string name="title_edit_user_nickname">修改昵称</string>

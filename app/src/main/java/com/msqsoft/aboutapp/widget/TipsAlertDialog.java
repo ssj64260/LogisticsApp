@@ -43,6 +43,8 @@ public class TipsAlertDialog extends AlertDialog {
 
         tvConfirm.setEnabled(false);
         tvCancel.setEnabled(false);
+        setCancelable(false);
+        setCanceledOnTouchOutside(false);
     }
 
     public void setTitleText(String title) {
