@@ -7,6 +7,7 @@
     <string name="text_progress_committing">提交中&#8230;</string>
     <string name="text_progress_requesting">请求中&#8230;</string>
     <string name="text_progress_uploading">上传中&#8230;</string>
+    <string name="text_progress_checking_update">正在检查更新&#8230;</string>
 
     <!--MainActivity-->
     <string name="tab_order_text">周边订单</string>
@@ -85,6 +86,8 @@
     <string name="text_dialog_button_do_login_out">退出登录</string>
     <string name="text_dialog_button_cancel">取消</string>
     <string name="toast_clean_cache_finish">已清除缓存</string>
+    <string name="toast_is_last_version">已经是最新版</string>
+    <string name="toast_get_version_error">获取版本失败</string>
 
     <!--EditUserInfoActivity-->
     <string name="title_edit_user_information">修改个人资料</string>

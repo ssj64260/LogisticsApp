@@ -184,6 +184,7 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
     }
 
     private void showPhotoDialog() {
+        //TODO
         PictureSelector.create(EditUserInfoActivity.this)
                 .openGallery(PictureMimeType.ofImage())
                 .theme(R.style.picture_default_style)

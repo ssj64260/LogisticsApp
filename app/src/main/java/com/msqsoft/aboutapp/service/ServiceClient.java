@@ -1,6 +1,5 @@
 package com.msqsoft.aboutapp.service;
 
-import com.msqsoft.aboutapp.config.API;
 import com.msqsoft.aboutapp.config.ServiceApi;
 
 import java.security.KeyManagementException;
@@ -59,7 +58,7 @@ public class ServiceClient {
 
     private static Retrofit createRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl(API.BASE_HOST)
+                .baseUrl(ServiceApi.BASE_HOST)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getOkHttpClient())

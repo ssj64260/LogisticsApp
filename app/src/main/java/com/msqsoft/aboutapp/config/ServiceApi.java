@@ -1,6 +1,7 @@
 package com.msqsoft.aboutapp.config;
 
 import com.msqsoft.aboutapp.model.BannerBean;
+import com.msqsoft.aboutapp.model.FirImBean;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 
@@ -11,6 +12,7 @@ import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -21,6 +23,12 @@ import retrofit2.http.Part;
  */
 
 public interface ServiceApi {
+
+    String BASE_HOST = "http://121.201.74.114/aboutapp/index.php/";
+
+    //Fir更新app
+    @HTTP(method = "GET", path = "http://api.fir.im/apps/latest/5881b8c0959d691f5c00044c?api_token=e0be056f9e2f0e9623c5dd69b32e488c")
+    Observable<FirImBean> checkUpdate();
 
     @POST("?g=WebApi&m=login&a=mobilesSignIn")//登录
     @FormUrlEncoded

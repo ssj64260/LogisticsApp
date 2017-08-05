@@ -12,13 +12,21 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
+import com.msqsoft.aboutapp.model.FirImBean;
+import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.DataCleanManager;
 import com.msqsoft.aboutapp.utils.FileUtil;
 import com.msqsoft.aboutapp.utils.SDCardUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
+import com.msqsoft.aboutapp.utils.UpdateAppUtils;
 import com.msqsoft.aboutapp.utils.VersionUtil;
 
 import java.io.File;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * 用户设置
@@ -52,7 +60,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
                     ToastMaster.toast(getString(R.string.text_change_bind_phone));
                     break;
                 case R.id.ll_check_update:
-                    ToastMaster.toast(getString(R.string.text_check_update));
+                    checkUpdate();
                     break;
                 case R.id.ll_clean_cache:
                     final String cacheDir = SDCardUtil.getCacheDir(UserSettingsActivity.this);
@@ -125,7 +133,7 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
             e.printStackTrace();
         }
 
-        final String cache = FileUtil.FormatFileSize(this, cacheSize);
+        final String cache = FileUtil.formatFileSize(this, cacheSize);
         tvCache.setText(cache);
     }
 
@@ -145,6 +153,35 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    private void checkUpdate() {
+        showProgress(getString(R.string.text_progress_checking_update));
+        ServiceClient.getService().checkUpdate()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Consumer<FirImBean>() {
+                            @Override
+                            public void accept(@NonNull FirImBean firImBean) throws Exception {
+                                final int lastVersionCode = Integer.parseInt(firImBean.getVersion());
+                                final int currentVersionCode = VersionUtil.getVersionCode(UserSettingsActivity.this);
+                                if (lastVersionCode > currentVersionCode) {
+                                    final UpdateAppUtils updateApp = new UpdateAppUtils(UserSettingsActivity.this, firImBean);
+                                    updateApp.showUpdateDialog();
+                                } else {
+                                    ToastMaster.toast(getString(R.string.toast_is_last_version));
+                                }
+                                hideProgress();
+                            }
+                        },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                ToastMaster.toast(getString(R.string.toast_get_version_error));
+                                hideProgress();
+                            }
+                        });
     }
 
 }
