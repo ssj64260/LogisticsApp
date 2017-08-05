@@ -1,7 +1,7 @@
 package com.msqsoft.aboutapp.model;
 
 /**
- * Created by lenovo on 17/7/25.
+ * 接口参数
  */
 
 public class ServiceResult<T> {

@@ -2,6 +2,7 @@ package com.msqsoft.aboutapp.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,11 @@ import android.view.ViewGroup;
 import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.db.LiteOrmHelper;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
+import com.msqsoft.aboutapp.ui.MainActivity;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.widget.DefaultProgressDialog;
+
+import io.rong.imkit.RongIM;
 
 /**
  * 基类
@@ -67,6 +71,13 @@ public class BaseFragment extends Fragment {
         final LiteOrmHelper dbHelper = new LiteOrmHelper(APP.getInstance());
         dbHelper.deleteAll(UserInfoDetailBean.class);
         dbHelper.closeDB();
+
+        RongIM.getInstance().logout();
+
+        Intent intent = new Intent();
+        intent.setClass(mActivity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     protected void showProgress(String message) {

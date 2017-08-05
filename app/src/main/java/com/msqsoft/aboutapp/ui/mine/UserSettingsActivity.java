@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
-import com.msqsoft.aboutapp.ui.MainActivity;
 import com.msqsoft.aboutapp.utils.DataCleanManager;
 import com.msqsoft.aboutapp.utils.FileUtil;
 import com.msqsoft.aboutapp.utils.SDCardUtil;
@@ -137,10 +136,6 @@ public class UserSettingsActivity extends BaseAppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 doLoginOut();
-                Intent intent = new Intent();
-                intent.setClass(UserSettingsActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
             }
         });
         dialog.setButton(Dialog.BUTTON_NEGATIVE, getString(R.string.text_dialog_button_cancel), new DialogInterface.OnClickListener() {

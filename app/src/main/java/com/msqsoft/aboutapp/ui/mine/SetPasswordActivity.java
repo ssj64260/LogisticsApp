@@ -14,13 +14,14 @@ import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
 import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
+import com.msqsoft.aboutapp.model.UserInfoDetailBean;
+import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -150,24 +151,19 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            new Consumer<ServiceResult>() {
+                            new MyObserver<ServiceResult<UserInfoDetailBean>>() {
                                 @Override
-                                public void accept(@NonNull ServiceResult result) throws Exception {
+                                public void onSuccess(@NonNull ServiceResult<UserInfoDetailBean> result) {
                                     hideProgress();
-                                    final String code = result.getResultCode();
-                                    if ("100".equals(code)) {
-                                        ToastMaster.toast(getString(R.string.toast_register_success));
-                                        toActivity(LoginActivity.class);
-                                    } else {
-                                        ToastMaster.toast(result.getResultMsg());
-                                    }
+                                    ToastMaster.toast(getString(R.string.toast_register_success));
+                                    toActivity(LoginActivity.class);
                                 }
-                            },
-                            new Consumer<Throwable>() {
+
                                 @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                public void onError(String errorMsg) {
+                                    super.onError(errorMsg);
                                     hideProgress();
-                                    ToastMaster.toast(getString(R.string.toast_register_error));
+                                    ToastMaster.toast(errorMsg);
                                 }
                             });
         }
@@ -183,24 +179,19 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            new Consumer<ServiceResult>() {
+                            new MyObserver<ServiceResult>() {
                                 @Override
-                                public void accept(@NonNull ServiceResult result) throws Exception {
+                                public void onSuccess(@NonNull ServiceResult result) {
                                     hideProgress();
-                                    final String code = result.getResultCode();
-                                    if ("100".equals(code)) {
-                                        ToastMaster.toast(getString(R.string.toast_set_password_success));
-                                        toActivity(LoginActivity.class);
-                                    } else {
-                                        ToastMaster.toast(result.getResultMsg());
-                                    }
+                                    ToastMaster.toast(getString(R.string.toast_set_password_success));
+                                    toActivity(LoginActivity.class);
                                 }
-                            },
-                            new Consumer<Throwable>() {
+
                                 @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                public void onError(String errorMsg) {
+                                    super.onError(errorMsg);
                                     hideProgress();
-                                    ToastMaster.toast(getString(R.string.toast_set_password_error));
+                                    ToastMaster.toast(errorMsg);
                                 }
                             });
         }
@@ -217,24 +208,25 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            new Consumer<ServiceResult>() {
+                            new MyObserver<ServiceResult>() {
                                 @Override
-                                public void accept(@NonNull ServiceResult result) throws Exception {
+                                public void onSuccess(@NonNull ServiceResult result) {
                                     hideProgress();
-                                    final String code = result.getResultCode();
-                                    if ("100".equals(code)) {
-                                        ToastMaster.toast(getString(R.string.toast_change_password_success));
-                                        toActivity(UserSettingsActivity.class);
-                                    } else {
-                                        ToastMaster.toast(result.getResultMsg());
-                                    }
+                                    ToastMaster.toast(getString(R.string.toast_change_password_success));
+                                    toActivity(UserSettingsActivity.class);
                                 }
-                            },
-                            new Consumer<Throwable>() {
+
                                 @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                public void onError(String errorMsg) {
+                                    super.onError(errorMsg);
                                     hideProgress();
-                                    ToastMaster.toast(getString(R.string.toast_change_password_error));
+                                    ToastMaster.toast(errorMsg);
+                                }
+
+                                @Override
+                                public void onTokenIncorrect() {
+                                    hideProgress();
+                                    doLoginOut();
                                 }
                             });
         }

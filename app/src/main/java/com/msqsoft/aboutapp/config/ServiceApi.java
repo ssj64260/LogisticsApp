@@ -26,10 +26,6 @@ public interface ServiceApi {
     @FormUrlEncoded
     Observable<ServiceResult<UserInfoDetailBean>> doLogin(@Field("mobile") String mobile, @Field("password") String password);
 
-    @POST("?g=WebApi&m=user&a=getUserInfo")//获取当前登录用户信息
-    @FormUrlEncoded
-    Observable<ServiceResult<UserInfoDetailBean>> getUserInfoDetail(@Header("apiToken") String token, @Field("user_id") String userId);
-
     @POST("?g=WebApi&m=login&a=sendPinSignUp")//注册获取验证码
     @FormUrlEncoded
     Observable<ServiceResult> getRegisterVerificationCode(@Field("mobile") String mobile);
@@ -49,6 +45,14 @@ public interface ServiceApi {
     //获取首页广告
     @GET("?g=WebApi&m=basic&a=getslide")
     Observable<ServiceResult<List<BannerBean>>> getBannerList();
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // 需要验证token的接口
+    ///////////////////////////////////////////////////////////////////////////
+    @POST("?g=WebApi&m=user&a=getUserInfo")//获取当前登录用户信息
+    @FormUrlEncoded
+    Observable<ServiceResult<UserInfoDetailBean>> getUserInfoDetail(@Header("apiToken") String token, @Field("user_id") String userId);
 
     @POST("?g=WebApi&m=user&a=updateUserInfo")//修改用户昵称，个人签名，手机号
     @FormUrlEncoded

@@ -17,6 +17,7 @@ import com.msqsoft.aboutapp.app.BaseFragment;
 import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
+import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
@@ -25,7 +26,6 @@ import com.msqsoft.aboutapp.widget.imageloader.ImageLoaderFactory;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -214,24 +214,28 @@ public class MineFragment extends BaseFragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            new Consumer<ServiceResult<UserInfoDetailBean>>() {
+                            new MyObserver<ServiceResult<UserInfoDetailBean>>() {
                                 @Override
-                                public void accept(@NonNull ServiceResult<UserInfoDetailBean> result) throws Exception {
-                                    if ("100".equals(result.getResultCode())) {
-                                        final UserInfoDetailBean newUserInfo = result.getResultData();
-                                        if (newUserInfo != null) {
-                                            updateUserInfo(newUserInfo);
-                                            updateCourierInfo(newUserInfo);
-                                            setUserInfo(newUserInfo);
-                                        }
+                                public void onSuccess(@NonNull ServiceResult<UserInfoDetailBean> result) {
+                                    final UserInfoDetailBean newUserInfo = result.getResultData();
+                                    if (newUserInfo != null) {
+                                        updateUserInfo(newUserInfo);
+                                        updateCourierInfo(newUserInfo);
+                                        setUserInfo(newUserInfo);
                                     }
                                     hideProgress();
                                 }
-                            },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
 
+                                @Override
+                                public void onError(String errorMsg) {
+                                    super.onError(errorMsg);
+                                    hideProgress();
+                                }
+
+                                @Override
+                                public void onTokenIncorrect() {
+                                    hideProgress();
+                                    doLoginOut();
                                 }
                             });
         }

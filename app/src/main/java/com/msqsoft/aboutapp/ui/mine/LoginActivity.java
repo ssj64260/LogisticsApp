@@ -16,13 +16,13 @@ import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.db.LiteOrmHelper;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
+import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.rong.imlib.RongIMClient;
 
@@ -204,31 +204,26 @@ public class LoginActivity extends BaseAppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        new Consumer<ServiceResult<UserInfoDetailBean>>() {
+                        new MyObserver<ServiceResult<UserInfoDetailBean>>() {
                             @Override
-                            public void accept(@NonNull ServiceResult<UserInfoDetailBean> result) throws Exception {
-                                if ("100".equals(result.getResultCode())) {
-                                    mUserInfo = result.getResultData();
-                                    if (mUserInfo != null) {
-                                        final String userId = mUserInfo.getId();
-                                        PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, userId);
-                                        final String token = mUserInfo.getAccess_token();
-                                        PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, token);
-                                        final String rongIMToken = Config.TEST_TOKEN;
-                                        PreferencesUtil.setData(Config.USER_INFO, Config.KEY_RONGIM_TOKEN, rongIMToken);
-                                        doConnectRongIM(mIMCallback);
-                                    }
-                                } else {
-                                    hideProgress();
-                                    ToastMaster.toast(result.getResultMsg());
+                            public void onSuccess(@NonNull ServiceResult<UserInfoDetailBean> result) {
+                                mUserInfo = result.getResultData();
+                                if (mUserInfo != null) {
+                                    final String userId = mUserInfo.getId();
+                                    PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, userId);
+                                    final String token = mUserInfo.getAccess_token();
+                                    PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, token);
+                                    final String rongIMToken = Config.TEST_TOKEN;
+                                    PreferencesUtil.setData(Config.USER_INFO, Config.KEY_RONGIM_TOKEN, rongIMToken);
+                                    doConnectRongIM(mIMCallback);
                                 }
                             }
-                        },
-                        new Consumer<Throwable>() {
+
                             @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
+                            public void onError(String errorMsg) {
+                                super.onError(errorMsg);
                                 hideProgress();
-                                ToastMaster.toast(getString(R.string.toast_login_error));
+                                ToastMaster.toast(errorMsg);
                             }
                         });
     }

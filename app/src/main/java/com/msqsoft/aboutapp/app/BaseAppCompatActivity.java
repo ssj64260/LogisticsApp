@@ -1,6 +1,7 @@
 package com.msqsoft.aboutapp.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.db.LiteOrmHelper;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
+import com.msqsoft.aboutapp.ui.MainActivity;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.widget.DefaultProgressDialog;
 import com.orhanobut.logger.Logger;
@@ -78,6 +80,13 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         final LiteOrmHelper dbHelper = new LiteOrmHelper(this);
         dbHelper.deleteAll(UserInfoDetailBean.class);
         dbHelper.closeDB();
+
+        RongIM.getInstance().logout();
+
+        Intent intent = new Intent();
+        intent.setClass(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     protected void doConnectRongIM(RongIMClient.ConnectCallback callback) {

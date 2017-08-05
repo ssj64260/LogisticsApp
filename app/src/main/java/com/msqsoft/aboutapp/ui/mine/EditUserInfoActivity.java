@@ -18,6 +18,7 @@ import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
 import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
+import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
@@ -29,7 +30,6 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -214,23 +214,27 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            new Consumer<ServiceResult<UserInfoDetailBean>>() {
+                            new MyObserver<ServiceResult<UserInfoDetailBean>>() {
                                 @Override
-                                public void accept(@NonNull ServiceResult<UserInfoDetailBean> result) throws Exception {
-                                    if ("100".equals(result.getResultCode())) {
-                                        final UserInfoDetailBean newUserInfo = result.getResultData();
-                                        if (newUserInfo != null) {
-                                            updateUserInfo(newUserInfo);
-                                            setUserInfo(newUserInfo);
-                                        }
+                                public void onSuccess(@NonNull ServiceResult<UserInfoDetailBean> result) {
+                                    final UserInfoDetailBean newUserInfo = result.getResultData();
+                                    if (newUserInfo != null) {
+                                        updateUserInfo(newUserInfo);
+                                        setUserInfo(newUserInfo);
                                     }
                                     hideProgress();
                                 }
-                            },
-                            new Consumer<Throwable>() {
+
                                 @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
+                                public void onError(String errorMsg) {
+                                    super.onError(errorMsg);
                                     hideProgress();
+                                }
+
+                                @Override
+                                public void onTokenIncorrect() {
+                                    hideProgress();
+                                    doLoginOut();
                                 }
                             });
         }
@@ -245,27 +249,30 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        new Consumer<ServiceResult>() {
+                        new MyObserver<ServiceResult>() {
                             @Override
-                            public void accept(@NonNull ServiceResult result) throws Exception {
-                                if ("100".equals(result.getResultCode())) {
-                                    final UserInfoDetailBean userInfo = getUserInfo();
-                                    userInfo.setUser_nicename(nickname);
-                                    userInfo.setSignature(sign);
-                                    updateUserInfo(userInfo);
-                                    ToastMaster.toast(getString(R.string.toast_upate_user_information_success));
-                                    onBackPressed();
-                                } else {
-                                    ToastMaster.toast(result.getResultMsg());
-                                }
+                            public void onSuccess(@NonNull ServiceResult result) {
+                                final UserInfoDetailBean userInfo = getUserInfo();
+                                userInfo.setUser_nicename(nickname);
+                                userInfo.setSignature(sign);
+                                updateUserInfo(userInfo);
+
                                 hideProgress();
+                                ToastMaster.toast(getString(R.string.toast_upate_user_information_success));
+                                onBackPressed();
                             }
-                        },
-                        new Consumer<Throwable>() {
+
                             @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                ToastMaster.toast(getString(R.string.toast_upate_user_information_error));
+                            public void onError(String errorMsg) {
+                                super.onError(errorMsg);
                                 hideProgress();
+                                ToastMaster.toast(errorMsg);
+                            }
+
+                            @Override
+                            public void onTokenIncorrect() {
+                                hideProgress();
+                                doLoginOut();
                             }
                         });
     }
@@ -281,21 +288,25 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                            new Consumer<ServiceResult>() {
+                            new MyObserver<ServiceResult>() {
                                 @Override
-                                public void accept(@NonNull ServiceResult result) throws Exception {
+                                public void onSuccess(@NonNull ServiceResult result) {
                                     hideProgress();
                                     ToastMaster.toast(result.getResultMsg());
-                                    if ("100".equals(result.getResultCode())) {
-                                        getUserInfoDetail();
-                                    }
+                                    getUserInfoDetail();
                                 }
-                            },
-                            new Consumer<Throwable>() {
+
                                 @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-                                    ToastMaster.toast(getString(R.string.toast_upload_avatar_error));
+                                public void onError(String errorMsg) {
+                                    super.onError(errorMsg);
                                     hideProgress();
+                                    ToastMaster.toast(errorMsg);
+                                }
+
+                                @Override
+                                public void onTokenIncorrect() {
+                                    hideProgress();
+                                    doLoginOut();
                                 }
                             });
 

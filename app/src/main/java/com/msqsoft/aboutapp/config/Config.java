@@ -19,4 +19,8 @@ public class Config {
     public static final String KEY_ABOUTAPP_TOKEN = "key_aboutapp_token";//物流APPtoken
     public static final String KEY_ABOUTAPP_USER_ID = "key_aboutapp_user_id";//物流APP用户ID
 
+    //错误码
+    public static final String RESULT_CODE_SUCCESS = "100";//成功
+    public static final String RESULT_CODE_TOKEN_INCORRECT = "206";//登录超时
+
 }

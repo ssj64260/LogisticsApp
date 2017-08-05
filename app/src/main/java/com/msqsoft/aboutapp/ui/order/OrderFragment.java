@@ -13,6 +13,7 @@ import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseFragment;
 import com.msqsoft.aboutapp.model.BannerBean;
 import com.msqsoft.aboutapp.model.ServiceResult;
+import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 import com.msqsoft.aboutapp.widget.imageloader.ImageLoaderFactory;
@@ -23,8 +24,6 @@ import com.youth.banner.loader.ImageLoader;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -129,26 +128,17 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void getBannerList() {
-        //TODO 封装
         ServiceClient.getService().getBannerList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        new Consumer<ServiceResult<List<BannerBean>>>() {
+                        new MyObserver<ServiceResult<List<BannerBean>>>() {
                             @Override
-                            public void accept(@NonNull ServiceResult<List<BannerBean>> result) throws Exception {
-                                if ("100".equals(result.getResultCode())) {
-                                    final List<BannerBean> bannerList = result.getResultData();
-                                    if (bannerList != null && bannerList.size() > 0) {
-                                        mBanner.setImages(bannerList).start();
-                                    }
+                            public void onSuccess(ServiceResult<List<BannerBean>> result) {
+                                final List<BannerBean> bannerList = result.getResultData();
+                                if (bannerList != null && bannerList.size() > 0) {
+                                    mBanner.setImages(bannerList).start();
                                 }
-                            }
-                        },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-
                             }
                         });
     }

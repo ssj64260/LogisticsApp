@@ -1,7 +1,7 @@
 package com.msqsoft.aboutapp.model;
 
 /**
- * Created by lenovo on 17/8/1.
+ * 评论
  */
 
 public class CommentBean {
