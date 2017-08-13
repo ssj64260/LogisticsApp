@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="12dp"
+        tools:src="@drawable/rc_ext_realtime_default_avatar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/iv_image">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/textsize_14"
+            tools:text="订单号:1234567890123" />
+
+        <LinearLayout
+            android:id="@+id/ll_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginTop="9dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_place_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_868686"
+                android:textSize="@dimen/textsize_12"
+                tools:text="广东省佛山市" />
+
+            <ImageView
+                android:id="@+id/iv_travel"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/list_travel" />
+
+            <TextView
+                android:id="@+id/tv_place_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_868686"
+                android:textSize="@dimen/textsize_12"
+                tools:text="广东省佛山市" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_place"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/color_868686"
+            android:textSize="@dimen/textsize_12"
+            tools:text="家用电器" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/tv_title"
+            android:paddingBottom="2dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="2dp"
+            android:textColor="@color/color_ADADAD"
+            android:textSize="@dimen/textsize_12"
+            android:visibility="gone"
+            tools:text="未付款"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/tv_sub_title"
+            android:textColor="@color/color_ADADAD"
+            android:textSize="@dimen/textsize_12"
+            android:visibility="gone"
+            tools:text="2015-12-12"
+            tools:visibility="visible" />
+    </RelativeLayout>
+
+</RelativeLayout>
+

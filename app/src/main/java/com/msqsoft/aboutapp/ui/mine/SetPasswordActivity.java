@@ -12,12 +12,10 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
-import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
-import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -202,7 +200,7 @@ public class SetPasswordActivity extends BaseAppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             ToastMaster.toast(getString(R.string.toast_passowrd_is_null));
         } else {
-            final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+            final String token = getAboutAppToken();
             showProgress(getString(R.string.text_progress_committing));
             ServiceClient.getService().doChangePassword(token, mCode, password)
                     .subscribeOn(Schedulers.io())

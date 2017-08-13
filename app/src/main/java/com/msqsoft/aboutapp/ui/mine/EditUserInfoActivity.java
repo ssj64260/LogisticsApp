@@ -15,13 +15,11 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
-import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.ui.adapter.OnListClickListener;
-import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 import com.msqsoft.aboutapp.widget.ListSelectDialog;
 import com.msqsoft.aboutapp.widget.imageloader.GlideCircleTransform;
@@ -264,8 +262,8 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
     }
 
     private void getUserInfoDetail() {
-        final String currentUserId = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, "");
-        final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+        final String currentUserId = getUserId();
+        final String token = getAboutAppToken();
         if (!TextUtils.isEmpty(currentUserId)) {
             showProgress(getString(R.string.text_progress_loading));
             ServiceClient.getService().getUserInfoDetail(token, currentUserId)
@@ -299,7 +297,7 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
     }
 
     private void updateUserInfo() {
-        final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+        final String token = getAboutAppToken();
         final String nickname = tvNickname.getText().toString();
         final String sign = tvUserSign.getText().toString();
         showProgress(getString(R.string.text_progress_committing));
@@ -339,7 +337,7 @@ public class EditUserInfoActivity extends BaseAppCompatActivity {
         final File file = new File(avatarPath);
         if (file.exists()) {
             showProgress(getString(R.string.text_progress_uploading));
-            final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+            final String token = getAboutAppToken();
             RequestBody requestFile = RequestBody.create(MultipartBody.FORM, file);
             MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
             ServiceClient.getService().uploadUserAvatar(token, part)

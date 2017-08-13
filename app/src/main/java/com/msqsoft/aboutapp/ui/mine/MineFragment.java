@@ -14,12 +14,10 @@ import android.widget.TextView;
 
 import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseFragment;
-import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.MyObserver;
 import com.msqsoft.aboutapp.service.ServiceClient;
-import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 import com.msqsoft.aboutapp.widget.imageloader.GlideCircleTransform;
 import com.msqsoft.aboutapp.widget.imageloader.ImageLoaderFactory;
@@ -86,7 +84,7 @@ public class MineFragment extends BaseFragment {
                     ToastMaster.toast(getString(R.string.text_button_my_wallet));
                     break;
                 case R.id.ll_address:
-                    ToastMaster.toast(getString(R.string.text_button_manage_address));
+                    startActivity(new Intent(mActivity, ManageAddressActivity.class));
                     break;
                 case R.id.ll_registered:
                     ToastMaster.toast(getString(R.string.text_button_register_courier));
@@ -206,8 +204,8 @@ public class MineFragment extends BaseFragment {
     }
 
     private void getUserInfoDetail() {
-        final String currentUserId = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, "");
-        final String token = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
+        final String currentUserId = getUserId();
+        final String token = getAboutAppToken();
         if (!TextUtils.isEmpty(currentUserId)) {
             showProgress(getString(R.string.text_progress_loading));
             ServiceClient.getService().getUserInfoDetail(token, currentUserId)

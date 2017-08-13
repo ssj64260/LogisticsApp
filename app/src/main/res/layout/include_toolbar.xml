@@ -60,6 +60,17 @@
             android:src="@drawable/nav_release"
             android:visibility="gone" />
 
+
+        <ImageView
+            android:id="@+id/iv_toolbar_action3"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_bg_button_transparent"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/nav_add"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </RelativeLayout>

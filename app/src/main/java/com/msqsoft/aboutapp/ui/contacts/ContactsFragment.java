@@ -89,7 +89,7 @@ public class ContactsFragment extends BaseFragment {
 
         fragments = new ArrayList<>(2);
         fragments.add(initConversationList());
-        fragments.add(new BaseFragment());
+        fragments.add(FriendsListFragment.newInstance(""));
 
         mViewPager.setAdapter(new ContactsFragmentPageAdapter(getChildFragmentManager(), tabTitles, fragments));
         mTabLayout.setupWithViewPager(mViewPager);

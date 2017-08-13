@@ -61,6 +61,11 @@ public class ImageLoader implements ImageLoaderWrapper {
     }
 
     @Override
+    public void loadImageCenterCrop(Context context, ImageView imageView, String url, BitmapTransformation transformation) {
+        loadImageCenterCrop(context, imageView, url, mPlaceHolder, mErrorImage, transformation);
+    }
+
+    @Override
     public void loadImageCenterCrop(Context context, ImageView imageView, String url, int placeholder, int errorImage, BitmapTransformation transformation) {
         RequestOptions options = new RequestOptions()
                 .placeholder(placeholder)

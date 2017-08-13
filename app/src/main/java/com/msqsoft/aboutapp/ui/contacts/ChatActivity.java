@@ -42,6 +42,7 @@ public class ChatActivity extends BaseAppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    ToastMaster.toast(getString(R.string.toast_rongim_token_error));
                     hideProgress();
                 }
             });

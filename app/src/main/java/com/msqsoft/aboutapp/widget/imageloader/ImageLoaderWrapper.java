@@ -23,5 +23,7 @@ public interface ImageLoaderWrapper {
 
     void loadImageCenterCrop(Context context, ImageView imageView, String url, int placeholder, int errorImage);
 
+    void loadImageCenterCrop(Context context, ImageView imageView, String url, BitmapTransformation transformation);
+
     void loadImageCenterCrop(Context context, ImageView imageView, String url, int placeholder, int errorImage, BitmapTransformation transformation);
 }

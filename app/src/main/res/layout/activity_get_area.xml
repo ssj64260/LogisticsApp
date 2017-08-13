@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/ll_location_now"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/ic_positioning"/>
+
+        <TextView
+            android:id="@+id/tv_location_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/title_location_now"
+            android:textSize="16dp"
+            android:textColor="@color/color_181818"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_choose_area"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_EEEEEE"
+        android:paddingLeft="16dp"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="广东"
+        android:textSize="14dp"
+        android:textColor="@color/color_181818"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

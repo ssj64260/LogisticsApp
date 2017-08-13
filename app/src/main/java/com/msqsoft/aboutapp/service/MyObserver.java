@@ -15,7 +15,7 @@ import static com.msqsoft.aboutapp.config.Config.RESULT_CODE_TOKEN_INCORRECT;
  * 请求回调，处理错误码
  */
 
-public abstract class MyObserver<T extends ServiceResult> implements Observer<T> {
+public abstract class MyObserver<T> implements Observer<T> {
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
@@ -24,13 +24,18 @@ public abstract class MyObserver<T extends ServiceResult> implements Observer<T>
 
     @Override
     public void onNext(@NonNull T result) {
-        if (RESULT_CODE_SUCCESS.equals(result.getResultCode())) {
-            onSuccess(result);
-        } else if (RESULT_CODE_TOKEN_INCORRECT.equals(result.getResultCode())) {
-            ToastMaster.toast(result.getResultMsg());
-            onTokenIncorrect();
+        if (result instanceof ServiceResult) {
+            final ServiceResult serviceResult = (ServiceResult) result;
+            if (RESULT_CODE_SUCCESS.equals(serviceResult.getResultCode())) {
+                onSuccess(result);
+            } else if (RESULT_CODE_TOKEN_INCORRECT.equals(serviceResult.getResultCode())) {
+                ToastMaster.toast(serviceResult.getResultMsg());
+                onTokenIncorrect();
+            } else {
+                onError(serviceResult.getResultMsg());
+            }
         } else {
-            onError(result.getResultMsg());
+            onSuccess(result);
         }
     }
 

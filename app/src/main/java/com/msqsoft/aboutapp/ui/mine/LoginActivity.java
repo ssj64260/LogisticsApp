@@ -14,6 +14,7 @@ import com.msqsoft.aboutapp.R;
 import com.msqsoft.aboutapp.app.BaseAppCompatActivity;
 import com.msqsoft.aboutapp.config.Config;
 import com.msqsoft.aboutapp.db.LiteOrmHelper;
+import com.msqsoft.aboutapp.model.RongIMTokenBean;
 import com.msqsoft.aboutapp.model.ServiceResult;
 import com.msqsoft.aboutapp.model.UserInfoDetailBean;
 import com.msqsoft.aboutapp.service.MyObserver;
@@ -21,10 +22,12 @@ import com.msqsoft.aboutapp.service.ServiceClient;
 import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.utils.ToastMaster;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
-import io.rong.imlib.RongIMClient;
 
 /**
  * 登录页面
@@ -40,36 +43,6 @@ public class LoginActivity extends BaseAppCompatActivity {
     private TextView tvForgetPwd;
 
     private UserInfoDetailBean mUserInfo;
-
-    private RongIMClient.ConnectCallback mIMCallback = new RongIMClient.ConnectCallback() {
-        @Override
-        public void onTokenIncorrect() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ToastMaster.toast(getString(R.string.toast_token_error));
-                    hideProgress();
-                }
-            });
-        }
-
-        @Override
-        public void onSuccess(String s) {
-            PreferencesUtil.setData(Config.APP_SETTING, Config.KEY_LAST_LOGIN_USER, mUserInfo.getMobile());
-            final LiteOrmHelper dbHelper = new LiteOrmHelper(LoginActivity.this);
-            dbHelper.save(mUserInfo);
-            dbHelper.closeDB();
-            hideProgress();
-            ToastMaster.toast(getString(R.string.toast_login_success));
-            onBackPressed();
-        }
-
-        @Override
-        public void onError(RongIMClient.ErrorCode errorCode) {
-            ToastMaster.toast(getString(R.string.toast_login_error) + "\nErrorCode：" + errorCode.getValue() + "\nErrorMessage：" + errorCode.getMessage());
-            hideProgress();
-        }
-    };
 
     private View.OnClickListener click = new View.OnClickListener() {
         @Override
@@ -203,29 +176,84 @@ public class LoginActivity extends BaseAppCompatActivity {
         ServiceClient.getService().doLogin(phoneNumber, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        new MyObserver<ServiceResult<UserInfoDetailBean>>() {
-                            @Override
-                            public void onSuccess(@NonNull ServiceResult<UserInfoDetailBean> result) {
-                                mUserInfo = result.getResultData();
-                                if (mUserInfo != null) {
-                                    final String userId = mUserInfo.getId();
-                                    PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, userId);
-                                    final String token = mUserInfo.getAccess_token();
-                                    PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, token);
-                                    final String rongIMToken = Config.TEST_TOKEN;
-                                    PreferencesUtil.setData(Config.USER_INFO, Config.KEY_RONGIM_TOKEN, rongIMToken);
-                                    doConnectRongIM(mIMCallback);
-                                }
-                            }
+                .subscribe(new MyObserver<ServiceResult<UserInfoDetailBean>>() {
+                    @Override
+                    public void onSuccess(@NonNull ServiceResult<UserInfoDetailBean> result) {
+                        mUserInfo = result.getResultData();
 
-                            @Override
-                            public void onError(String errorMsg) {
-                                super.onError(errorMsg);
-                                hideProgress();
-                                ToastMaster.toast(errorMsg);
-                            }
-                        });
+                        getRongToken();
+                    }
+
+                    @Override
+                    public void onError(String errorMsg) {
+                        super.onError(errorMsg);
+                        hideProgress();
+                        ToastMaster.toast(errorMsg);
+                    }
+                });
     }
 
+    private void getRongToken() {
+        if (mUserInfo != null) {
+            final String appKey = Config.APP_KEY;
+            final String nonce = String.valueOf((int) (Math.random() * 1000000));
+            final String timestamp = String.valueOf(System.currentTimeMillis());
+            final String signature = getSignature(Config.APP_SECRET, nonce, timestamp);
+            final String userId = mUserInfo.getId();
+            final String name = mUserInfo.getUser_nicename();
+            final String portraitUri = mUserInfo.getAvatar();
+
+            ServiceClient.getService().getRongIMToken(appKey, nonce, timestamp, signature, userId, name, portraitUri)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new MyObserver<RongIMTokenBean>() {
+                        @Override
+                        public void onSuccess(@NonNull RongIMTokenBean result) {
+                            PreferencesUtil.setData(Config.APP_SETTING, Config.KEY_LAST_LOGIN_USER, mUserInfo.getUser_login());
+                            final String userId = mUserInfo.getId();
+                            PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, userId);
+                            final String token = mUserInfo.getAccess_token();
+                            PreferencesUtil.setData(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, token);
+                            final String rongIMToken = result.getToken();
+                            PreferencesUtil.setData(Config.USER_INFO, Config.KEY_RONGIM_TOKEN, rongIMToken);
+                            final LiteOrmHelper dbHelper = new LiteOrmHelper(LoginActivity.this);
+                            dbHelper.save(mUserInfo);
+                            dbHelper.closeDB();
+                            ToastMaster.toast(getString(R.string.toast_login_success));
+                            hideProgress();
+                            onBackPressed();
+                        }
+
+                        @Override
+                        public void onError(String errorMsg) {
+                            super.onError(errorMsg);
+                            hideProgress();
+                            ToastMaster.toast(errorMsg);
+                        }
+                    });
+        }
+    }
+
+    private String getSignature(String appSecret, String nonce, String timestamp) {
+        String signature = "";
+        try {
+            final String beforeDigest = appSecret + nonce + timestamp;
+            final MessageDigest sha = MessageDigest.getInstance("SHA1");
+            final byte[] afterDigest = sha.digest(beforeDigest.getBytes());
+
+            final StringBuilder hexValue = new StringBuilder();
+            for (byte aByte : afterDigest) {
+                int val = ((int) aByte) & 0xff;
+                if (val < 16) {
+                    hexValue.append("0");
+                }
+                hexValue.append(Integer.toHexString(val));
+            }
+            signature = hexValue.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return signature;
+    }
 }

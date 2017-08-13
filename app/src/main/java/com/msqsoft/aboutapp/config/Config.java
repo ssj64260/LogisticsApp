@@ -6,10 +6,14 @@ package com.msqsoft.aboutapp.config;
 
 public class Config {
 
-    public static final String TEST_TOKEN = "fuhJ0Fwedcn+oLolIf3IT3Ift83tBRvTpflwsJy7HDx2w6J7FMLR/EbJGXWzl0e4w+bD7k+ntE/nhRAeIpq3tw==";
-//    public static final String TEST_TOKEN = "fuhJ0Fwedcn+oLolIf3IT3Ift83tBRvTpf";
+    public static final String APP_KEY = "qf3d5gbjqfddh";//TODO 修改融云app-key
+    public static final String APP_SECRET = "2FYiTXM8Ox4FcZ";//TODO 修改融云app-secret
 
     public static final int COUNT_DOWN_TIME = 60;//倒计时总时间
+    public static final int MAX_PAGE_SIZE = 10;//每次请求返回条数
+
+    //activity跳转请求码
+    public static final int REQUEST_CODE_LOGIN = 1001;
 
     //SharePreferences相关
     public static final String APP_SETTING = "app_setting";//app设置

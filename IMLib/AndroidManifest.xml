@@ -24,7 +24,7 @@
         <!--TODO 修改融云APP_KEY-->
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="vnroth0kvd5no" />
+            android:value="qf3d5gbjqfddh" />
 
         <service
             android:name="io.rong.imlib.ipc.RongService"

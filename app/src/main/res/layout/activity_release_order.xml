@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/include_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:text="@string/title_release_order_basic_information"
+                android:textColor="@color/color_333333"
+                android:textSize="12sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E3E3E3"/>
+
+            <LinearLayout
+                android:id="@+id/ll_edit_sender_address"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_send"/>
+
+                <TextView
+                    android:id="@+id/tv_edit_sender_address"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/title_edit_sender_address"
+                    android:textColor="@color/color_666666"
+                    android:textSize="14dp"
+                    tools:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_sender_details"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_sender_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_333333"
+                            android:textSize="14dp"
+                            tools:text="王尼玛"/>
+
+                        <TextView
+                            android:id="@+id/tv_sender_mobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:textColor="@color/color_333333"
+                            android:textSize="14dp"
+                            tools:text="13579246810"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_sender_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12dp"
+                        tools:text=" 广东省 佛山市 禅城区"/>
+
+                    <TextView
+                        android:id="@+id/tv_sender_address_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12dp"
+                        tools:text="季华六路九鼎国际公寓4座1110阿啪啪信息科技"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/list_right"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E3E3E3"/>
+
+            <LinearLayout
+                android:id="@+id/ll_edit_receiver_address"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_closed"/>
+
+                <TextView
+                    android:id="@+id/tv_edit_receiver_address"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/title_edit_sender_address"
+                    android:textColor="@color/color_666666"
+                    android:textSize="14dp"
+                    tools:visibility="gone"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_receiver_details"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_receiver_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_333333"
+                            android:textSize="14dp"
+                            tools:text="王尼玛"/>
+
+                        <TextView
+                            android:id="@+id/tv_receiver_mobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:textColor="@color/color_333333"
+                            android:textSize="14dp"
+                            tools:text="13579246810"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_receiver_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12dp"
+                        tools:text=" 广东省 佛山市 禅城区"/>
+
+                    <TextView
+                        android:id="@+id/tv_receiver_address_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12dp"
+                        tools:text="季华六路九鼎国际公寓4座1110阿啪啪信息科技"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/list_right"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_E3E3E3"/>
+
+            <LinearLayout
+                android:id="@+id/ll_goods_details_choose"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/title_goods_details_choose"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_goods_details_choose"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/list_bottom"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_goods_details_is_choose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E3E3E3"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_goods_details_choose_express_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_goods_details_choose_express_company"
+                        android:textColor="@color/color_181818"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_goods_details_choose_express_company_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="35dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_666666"
+                        android:textSize="14dp"
+                        tools:text="顺丰快递 百世汇通 运动速运"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/list_right"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E3E3E3"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_goods_details_choose_good_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_goods_details_choose_good_style"
+                        android:textColor="@color/color_181818"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_goods_details_choose_good_style"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="35dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_666666"
+                        android:textSize="14dp"
+                        tools:text="电子产品"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/list_right"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E3E3E3"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_goods_details_choose_good_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_goods_details_choose_good_size"
+                        android:textColor="@color/color_181818"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_goods_details_choose_good_size"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="35dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_666666"
+                        android:textSize="14dp"
+                        tools:text="19cm*19cm*19cm"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/list_right"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E3E3E3"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_goods_details_choose_good_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_goods_details_choose_good_weight"
+                        android:textColor="@color/color_181818"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_goods_details_choose_good_weight"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="35dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_666666"
+                        android:textSize="14dp"
+                        tools:text="15kg"/>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/list_right"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E3E3E3"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_goods_details_choose_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_rv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="23dp"
+                        android:layout_marginBottom="23dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_goods_details_choose_remark"
+                        android:textColor="@color/color_181818"
+                        android:textSize="14dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_rv"
+                        android:layout_marginTop="23dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginRight="30dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_goods_details_choose_remark"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/color_666666"
+                            android:textSize="14dp"
+                            tools:text="山路崎岖，请保护好我的物品。"/>
+
+                        <HorizontalScrollView
+                            android:id="@+id/hsv_remark_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="23dp"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <LinearLayout
+                                android:id="@+id/ll_remark_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"/>
+                        </HorizontalScrollView>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/list_right"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_E3E3E3"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
+                android:text="@string/title_issuance_way"
+                android:textSize="12dp"
+                android:textColor="@color/color_333333"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E3E3E3"/>
+
+            <LinearLayout
+                android:id="@+id/ll_issuance_way_now"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/title_issuance_way_now"
+                    android:textColor="@color/color_181818"
+                    android:textSize="14dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_issuance_way_now"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_radio_selected"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E3E3E3"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_issuance_way_book"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_issuance_way_book"
+                        android:textColor="@color/color_181818"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_issuance_way_book_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        tools:text="2016-09-21(今天) 11:00"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_issuance_way_book"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_radio_nomal"/>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_E3E3E3"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_issuance_way_reward"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_issuance_way_reward"
+                        android:textColor="@color/color_181818"
+                        android:textSize="14dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_issuance_way_reward_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        tools:text="￥15.00"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_issuance_way_reward"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_radio_nomal"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/color_E3E3E3"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_release_order"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/selector_bg_button_yellow"
+                    android:gravity="center"
+                    android:text="@string/title_release_order"
+                    android:textColor="@drawable/selector_text_button_yellow"
+                    android:textSize="16sp"
+                    android:enabled="false"/>
+
+                <TextView
+                    android:id="@+id/tv_send_to_courier"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/selector_bg_button_yellow"
+                    android:gravity="center"
+                    android:text="@string/title_send_to_courier"
+                    android:textColor="@drawable/selector_text_button_yellow"
+                    android:textSize="16sp"
+                    android:enabled="false"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -31,7 +31,7 @@ public class UserInfoDetailBean {
     private String user_activation_key;
     private String user_status;
     private String score;
-    private String user_type;
+    private String user_type;//1:admin，2:普通会有，3:快递员，4:店主
     private String coin;
     private String mobile;
     private String access_token;
@@ -50,11 +50,11 @@ public class UserInfoDetailBean {
     @Ignore
     private List<CommentBean> user_comment;
 
-    public void setUserInfo(UserInfoDetailBean newUserInfo) {
-        setUser_nicename(newUserInfo.getUser_nicename());
-        setAvatar(newUserInfo.getAvatar());
-        setSignature(newUserInfo.getSignature());
-        setMobile(newUserInfo.getMobile());
+    public void setUserInfo(String nickname, String avatar, String signature, String mobile) {
+        setUser_nicename(nickname);
+        setAvatar(avatar);
+        setSignature(signature);
+        setMobile(mobile);
     }
 
     public void setCourierInfo(UserInfoDetailBean courierInfo) {

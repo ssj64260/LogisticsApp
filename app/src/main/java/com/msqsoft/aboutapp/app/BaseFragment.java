@@ -3,9 +3,11 @@ package com.msqsoft.aboutapp.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.msqsoft.aboutapp.utils.PreferencesUtil;
 import com.msqsoft.aboutapp.widget.DefaultProgressDialog;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * 基类
@@ -37,10 +40,16 @@ public class BaseFragment extends Fragment {
     }
 
     protected boolean isLogin() {
-        final LiteOrmHelper dbHelper = new LiteOrmHelper(APP.getInstance());
-        final UserInfoDetailBean userInfo = dbHelper.queryFirst(UserInfoDetailBean.class);
-        dbHelper.closeDB();
-        return userInfo != null;
+        final String rongTOken = PreferencesUtil.getString(Config.USER_INFO, Config.KEY_RONGIM_TOKEN, "");
+        return !TextUtils.isEmpty(rongTOken);
+    }
+
+    protected String getUserId(){
+        return PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_USER_ID, "");
+    }
+
+    protected String getAboutAppToken(){
+        return PreferencesUtil.getString(Config.USER_INFO, Config.KEY_ABOUTAPP_TOKEN, "");
     }
 
     protected UserInfoDetailBean getUserInfo() {
@@ -61,9 +70,22 @@ public class BaseFragment extends Fragment {
     protected void updateUserInfo(UserInfoDetailBean newUserInfo) {
         final LiteOrmHelper dbHelper = new LiteOrmHelper(APP.getInstance());
         final UserInfoDetailBean userInfo = dbHelper.queryFirst(UserInfoDetailBean.class);
-        userInfo.setUserInfo(newUserInfo);
+        final String newNickname = newUserInfo.getUser_nicename();
+        final String newAvatar = newUserInfo.getAvatar();
+        final String newSignature = newUserInfo.getSignature();
+        final String newMobile = newUserInfo.getMobile();
+        final String userId = newUserInfo.getId();
+
+        updateRongUserInfo(userId, newNickname, newAvatar);
+        userInfo.setUserInfo(newNickname, newAvatar, newSignature, newMobile);
+
         dbHelper.save(userInfo);
         dbHelper.closeDB();
+    }
+
+    protected void updateRongUserInfo(String userId, String nickname, String avatar) {
+        final UserInfo userInfo = new UserInfo(userId, nickname, Uri.parse(avatar));
+        RongIM.getInstance().refreshUserInfoCache(userInfo);
     }
 
     protected void doLoginOut() {
@@ -76,7 +98,7 @@ public class BaseFragment extends Fragment {
 
         Intent intent = new Intent();
         intent.setClass(mActivity, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

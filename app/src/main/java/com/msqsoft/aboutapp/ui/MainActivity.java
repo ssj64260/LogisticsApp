@@ -26,6 +26,8 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
+import static com.msqsoft.aboutapp.config.Config.REQUEST_CODE_LOGIN;
+
 public class MainActivity extends BaseAppCompatActivity implements RongIM.UserInfoProvider {
 
     private static final String CURRENT_TAB = "current_tab";
@@ -54,17 +56,25 @@ public class MainActivity extends BaseAppCompatActivity implements RongIM.UserIn
         @Override
         public void onTokenIncorrect() {
             Logger.t("RongIMClient").d("onTokenIncorrect\n" + Thread.currentThread().getName());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ToastMaster.toast(getString(R.string.toast_rongim_token_error));
+                }
+            });
         }
 
         @Override
         public void onSuccess(String s) {
             RongIM.setUserInfoProvider(MainActivity.this, true);
             Logger.t("RongIMClient").d("onSuccess\n" + Thread.currentThread().getName());
+            ToastMaster.toast(getString(R.string.toast_connect_rongim_success));
         }
 
         @Override
         public void onError(RongIMClient.ErrorCode errorCode) {
             Logger.t("RongIMClient").d("onError\n" + Thread.currentThread().getName());
+            ToastMaster.toast(getString(R.string.toast_connect_rongim_error));
         }
     };
 
@@ -113,9 +123,7 @@ public class MainActivity extends BaseAppCompatActivity implements RongIM.UserIn
             }
         });
 
-        if (isLogin()) {
-            doConnectRongIM(mIMCallback);
-        }
+        doConnectRongIM(mIMCallback);
     }
 
     private void initFragment(Bundle savedInstanceState) {
@@ -158,7 +166,7 @@ public class MainActivity extends BaseAppCompatActivity implements RongIM.UserIn
         if (position > 0) {
             if (!isLogin()) {
                 mTabLayout.setCurrentTab(0);
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivityForResult(new Intent(this, LoginActivity.class), REQUEST_CODE_LOGIN);
                 return;
             }
         }
@@ -179,6 +187,20 @@ public class MainActivity extends BaseAppCompatActivity implements RongIM.UserIn
         }
 
         transaction.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_LOGIN) {
+            doConnectRongIM(mIMCallback);
+            if (fragmentList.length > 0) {
+                if (fragmentList[0] instanceof OrderFragment) {
+                    final OrderFragment orderFragment = (OrderFragment) fragmentList[0];
+                    orderFragment.refreshData();
+                }
+            }
+        }
     }
 
     @Override

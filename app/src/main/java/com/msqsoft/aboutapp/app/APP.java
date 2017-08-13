@@ -35,6 +35,7 @@ public class APP extends Application {
         super.onCreate();
 
         RongIM.init(this);
+        RongIM.getInstance().setMessageAttachedUserInfo(true);
 //        LeakCanary.install(getInstance());//内存泄漏监听
 
 //        CrashReport.initCrashReport(getApplicationContext(), "c260d28228", false);//Bugly
